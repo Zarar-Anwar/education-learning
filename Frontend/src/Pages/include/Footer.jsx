@@ -1,4 +1,10 @@
+import {useContext} from "react"
+import {Store} from "../../Utils/Store"
+import {Link} from "react-router-dom";
+
 function Footer() {
+    const {state} = useContext(Store)
+    const {ContactInfo} = state
 
     return (
         <>
@@ -14,9 +20,9 @@ function Footer() {
                         <div className="row">
                             <div className="col-xl-3 ">
                                 <div className="footer_widget">
-                                    <a href="index.html" className="mb-8">
+                                    <Link to="index.html" className="mb-8">
                                         <img src="assets/media/logo.png" alt=""/>
-                                    </a>
+                                     </Link>
                                     <p className="description_text">
                                         Lorem ipsum dolor sit amet consectetur. Non convallis sed id
                                         aliquam tempus. Volutpat tortor tincidunt egestas sit risus donec.
@@ -25,50 +31,25 @@ function Footer() {
                             </div>
                             <div className="col-xl-2 col-lg-3 col-sm-6">
                                 <div className="footer_widget">
-                                    <h5 className="medium-black mb-16">Quick Links</h5>
-                                    <ul className="unstyled list">
-                                        <li>
-                                            <a href="#">
-                                                <i className="fad fa-chevron-right"/>
-                                                Courses
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="fad fa-chevron-right"/>
-                                                Join a Career
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="fad fa-chevron-right"/>
-                                                Upcoming Events
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div className="col-xl-2 col-lg-3 col-sm-6">
-                                <div className="footer_widget">
                                     <h5 className="medium-black mb-16">Explore</h5>
                                     <ul className="unstyled list">
                                         <li>
-                                            <a href="about.html">
+                                            <Link to="/about-us">
                                                 <i className="fad fa-chevron-right"/>
                                                 About Us
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li>
-                                            <a href="gallery.html">
+                                            <Link to="/gallery">
                                                 <i className="fad fa-chevron-right"/>
                                                 Gallery
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li>
-                                            <a href="team-detail.html">
+                                            <Link to="/courses">
                                                 <i className="fad fa-chevron-right"/>
-                                                Teacher’s Detail
-                                            </a>
+                                                Courses
+                                            </Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -78,81 +59,51 @@ function Footer() {
                                     <h5 className="medium-black mb-16">Information</h5>
                                     <ul className="unstyled list">
                                         <li>
-                                            <a href="login.html">
+                                            <Link to="/login">
                                                 <i className="fad fa-chevron-right"/>
                                                 Login
-                                            </a>
+                                             </Link>
                                         </li>
                                         <li>
-                                            <a href="register.html">
+                                            <Link to="/registration">
                                                 <i className="fad fa-chevron-right"/>
                                                 Register
-                                            </a>
+                                             </Link>
                                         </li>
                                         <li>
-                                            <a href="contact.html">
+                                            <Link to="/contact-us">
                                                 <i className="fad fa-chevron-right"/>
                                                 Contact Us
-                                            </a>
+                                             </Link>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            <div className="col-lg-3 col-sm-6">
+                            <div className="col-lg-5 col-sm-6">
                                 <div className="footer_widget">
                                     <h5 className="medium-black mb-16">Contact Us</h5>
                                     <ul className="unstyled list">
                                         <li className="mb-16">
                                             <i className="fal fa-map-marker-alt"/>
-                                            631 Elgin ST. Celina, State 111111
+                                            {ContactInfo.address}
                                         </li>
                                         <li className="mb-16">
-                                            <a href="mailto:info@example.com">
+                                            <Link to={`mailto:${ContactInfo.contact_email}`}>
                                                 <i className="fal fa-envelope"/>
-                                                email@example.com
-                                            </a>
+                                                {ContactInfo.contact_email}
+                                            </Link>
                                         </li>
                                         <li>
-                                            <a href="tel:123456789">
+                                            <Link to={`tel:${ContactInfo.contact_phone}`}>
                                                 <i className="fal fa-phone-alt"/>
-                                                +1 234 567 890
-                                            </a>
+                                                {ContactInfo.contact_phone}
+                                            </Link>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                        <div className="bottom-row">
-                            <ul className="unstyled social_icons_list">
-                                <li>
-                                    <img src="assets/media/icons/brands/Instagram.png" alt=""/>
-                                </li>
-                                <li>
-                                    <img src="assets/media/icons/brands/Facebook.png" alt=""/>
-                                </li>
-                                <li>
-                                    <img src="assets/media/icons/brands/Twitter.png" alt=""/>
-                                </li>
-                                <li>
-                                    <img src="assets/media/icons/brands/Linkedin.png" alt=""/>
-                                </li>
-                            </ul>
-                            <div className="newsletter_block">
-                                <h5>Newsletter</h5>
-                                <form className="newsletter">
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        required=""
-                                        placeholder="Your email"
-                                    />
-                                    <button type="submit" className="educate-btn sm">
-                                        <span className="educate-btn__curve"/>
-                                        Subscribe
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
                 <div className="copyright_row">

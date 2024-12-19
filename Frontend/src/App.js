@@ -28,8 +28,8 @@ function App() {
                     <Route path='/contact-us' element={<Base><Contact/></Base>}/>
 
 
-                    <Route path='/login' element={<Base><Login/></Base>}/>
-                    <Route path='/registration' element={<Base><Registration/></Base>}/>
+                    <Route path='/login' element={<Login/>}/>
+                    <Route path='/registration' element={<Registration/>}/>
 
                     <Route path='*' element={<PageNotFound404/>}/>
 

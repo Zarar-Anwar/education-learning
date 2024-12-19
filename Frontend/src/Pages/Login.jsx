@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 const Login = () => {
     return (
         <>
@@ -7,12 +9,11 @@ const Login = () => {
                         <div className="col-xl-6">
                             <div className="form_block">
                                 <div className="text_block">
-                                    <a
-                                        href="index.html"
+                                    <Link to="/"
                                         className="educate_link_btn color-primary h6 mb-48"
                                     >
                                         <i className="far fa-chevron-left"/> Back To Home
-                                    </a>
+                                    </Link>
                                     <div className="title">
                                         <img
                                             src="assets/media/shapes/mic-speaker.png"
@@ -23,19 +24,19 @@ const Login = () => {
                                     </div>
                                     <div className="row">
                                         <div className="col-sm-6">
-                                            <a href="#" className="link-btn h6 mb-24">
+                                            <Link to="#" className="link-btn h6 mb-24">
                                                 <img src="assets/media/icons/brands/google.png" alt=""/>
                                                 Log in with Google
-                                            </a>
+                                            </Link>
                                         </div>
                                         <div className="col-sm-6">
-                                            <a href="#" className="link-btn h6 mb-24">
+                                            <Link to="#" className="link-btn h6 mb-24">
                                                 <img
                                                     src="assets/media/icons/brands/facebook-icon.png"
                                                     alt=""
                                                 />
                                                 Log in with Facebook
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
                                     <h5 className="or mb-4p">or</h5>
@@ -78,14 +79,14 @@ const Login = () => {
                                     <div className="bottom-row">
                                         <h6>
                                             Don’t have an account?{" "}
-                                            <a href="register.html" className="color-primary">
+                                            <Link to="/registration" className="color-primary">
                                                 Register
-                                            </a>
+                                            </Link>
                                         </h6>
                                         <h6>
-                                            <a href="#" className="color-primary">
+                                            <Link to="#" className="color-primary">
                                                 Forgot Password?
-                                            </a>
+                                            </Link>
                                         </h6>
                                     </div>
                                 </div>

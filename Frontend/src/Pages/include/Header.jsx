@@ -38,7 +38,7 @@ function Header() {
                                 <Link to="/login" className="main-menu__login">
                                     <i className="fal fa-user"/>
                                 </Link>
-                                <Link to="/contact-us" className="educate-btn sm d-xl-flex d-none">
+                                <Link to="/registration" className="educate-btn sm d-xl-flex d-none">
                                     <span className="educate-btn__curve"/>
                                     Enroll Now
                                 </Link>
