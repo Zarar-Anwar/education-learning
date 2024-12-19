@@ -93,7 +93,7 @@ class ContactForm(models.Model):
     subject = models.CharField(max_length=100, help_text="Message Subject")
     message = models.TextField(max_length=1000, help_text="Your Message")
     email = models.EmailField(max_length=100, help_text="Your Email Address")
-    phone = PhoneNumberField(help_text="Your Contact Number")
+    phone = models.IntegerField(help_text="Your Phone Number")
 
     def __str__(self):
         return self.fullname

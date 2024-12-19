@@ -53,9 +53,8 @@ INSTALLED_APPS = [
     # CUSTOM APPLICATIONS
     'src.api',
     'src.core',
-    'src.services.projects',
-    'src.services.services',
-    'src.services.members',
+    'src.course',
+
 ]
 
 MIDDLEWARE = [

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import api from "../Utils/Axios";
 import {toast} from "react-toastify";
 
 const Registration = () => {
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -39,6 +40,7 @@ const Registration = () => {
 
             // Handle success (e.g., redirect or show success message)
             toast.success("Registration SuccessFully")
+            navigate("/login")
         } catch (error) {
             // Handle error (e.g., show error message)
             if (error.response) {

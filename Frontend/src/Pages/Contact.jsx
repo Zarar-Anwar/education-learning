@@ -1,4 +1,57 @@
+import {useState, useContext} from "react";
+import axios from "axios";
+import {Store} from "../Utils/Store";
+import {Link} from "react-router-dom";
+import api from "../Utils/Axios";
+import {toast} from "react-toastify";
+
 const Contact = () => {
+    const {state} = useContext(Store);
+    const {ContactInfo} = state;
+
+    // State to handle form data and submission status
+    const [formData, setFormData] = useState({
+        fullname: "",
+        subject: "",
+        message: "",
+        email: "",
+        phone: "",
+    });
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(null);
+
+    // Handle form input changes
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    // Handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setSubmitSuccess(null);
+
+        try {
+            const response = await api.post('contact-us/', formData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            setSubmitSuccess(true);
+            toast.success("Form Submitted")
+        } catch (error) {
+            setSubmitSuccess(false);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         <>
             <section className="page_title_banner">
@@ -41,8 +94,7 @@ const Contact = () => {
                                 aliquam tempus. Volutpat tortor tincidunt egestas sit risus donec.
                             </p>
                             <form
-                                method="post"
-                                action="https://uiparadox.co.uk/templates/educate/v2/contact.html"
+                                onSubmit={handleSubmit}
                                 className="contact-form form-validator"
                                 noValidate="novalidate"
                             >
@@ -52,9 +104,10 @@ const Contact = () => {
                                             <input
                                                 type="text"
                                                 className="form-control p_lg"
-                                                id="name"
-                                                name="name"
-                                                required=""
+                                                name="fullname"
+                                                value={formData.fullname}
+                                                onChange={handleChange}
+                                                required
                                                 placeholder="First Name"
                                             />
                                         </div>
@@ -64,10 +117,11 @@ const Contact = () => {
                                             <input
                                                 type="text"
                                                 className="form-control p_lg"
-                                                id="last-name"
-                                                name="last-name"
-                                                required=""
-                                                placeholder="Last Name"
+                                                name="subject"
+                                                value={formData.subject}
+                                                onChange={handleChange}
+                                                required
+                                                placeholder="Subject"
                                             />
                                         </div>
                                     </div>
@@ -78,9 +132,10 @@ const Contact = () => {
                                             <input
                                                 type="email"
                                                 className="form-control p_lg"
-                                                id="email"
                                                 name="email"
-                                                required=""
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                required
                                                 placeholder="Email"
                                             />
                                         </div>
@@ -90,33 +145,34 @@ const Contact = () => {
                                             <input
                                                 type="text"
                                                 className="form-control p_lg"
-                                                id="subject"
-                                                name="subject"
-                                                required=""
-                                                placeholder="Subject"
+                                                name="phone"
+                                                value={formData.phone}
+                                                onChange={handleChange}
+                                                required
+                                                placeholder="Phone"
                                             />
                                         </div>
                                     </div>
                                 </div>
                                 <div className="mb-24">
-            <textarea
-                className="form-control p_lg"
-                id="detail-message"
-                name="message"
-                rows={5}
-                required=""
-                placeholder="Message"
-                defaultValue={""}
-            />
+                                    <textarea
+                                        className="form-control p_lg"
+                                        name="message"
+                                        rows={5}
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        required
+                                        placeholder="Message"
+                                    />
                                 </div>
                                 <div className="text-end">
-                                    <button type="submit" className="educate-btn">
+                                    <button type="submit" className="educate-btn" disabled={isSubmitting}>
                                         <span className="educate-btn__curve"/>
-                                        Send Message
+                                        {isSubmitting ? "Submitting..." : "Send Message"}
                                     </button>
                                 </div>
-                                {/* Alert Message */}
-                                <div id="message" className="alert-msg"/>
+
+
                             </form>
                         </div>
                         <div className="col-lg-6">
@@ -135,34 +191,32 @@ const Contact = () => {
                                     <div className="icon">
                                         <i className="fal fa-map-marker-alt"/>
                                     </div>
-                                    <h6 className="dark-gray">123 Main Street, Anytown, USA.</h6>
+                                    <h6 className="dark-gray">{ContactInfo.address}</h6>
                                 </div>
                             </div>
                             <div className="col-lg-4">
-                                <a href="tel:123456789" className="contact_link_block mb-48 mb-lg-0">
+                                <Link to={`tel:${ContactInfo.contact_phone}`}
+                                      className="contact_link_block mb-48 mb-lg-0">
                                     <div className="icon">
                                         <i className="fal fa-phone-alt"/>
                                     </div>
-                                    <span className="h6">+1 234 567 890</span>
-                                </a>
+                                    <span className="h6">{ContactInfo.contact_phone}</span>
+                                </Link>
                             </div>
                             <div className="col-lg-4">
-                                <a href="mailto:example@info.com" className="contact_link_block">
+                                <Link to={`mailto:${ContactInfo.contact_email}`} className="contact_link_block">
                                     <div className="icon">
                                         <i className="fal fa-envelope"/>
                                     </div>
-                                    <span className="h6">email@example.com</span>
-                                </a>
+                                    <span className="h6">{ContactInfo.contact_email}</span>
+                                </Link>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-
-
-
         </>
-    )
-}
+    );
+};
 
-export default Contact
+export default Contact;
