@@ -8,6 +8,8 @@ import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import Login from "./Pages/Login";
 import Registration from "./Pages/Registration";
+import CoursesDetails from "./Pages/CoursesDetails";
+import McqsList from "./Pages/McqsList";
 
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
                     {/* Web Routes */}
                     <Route path='/' element={<Base><Home/></Base>}/>
                     <Route path='/courses' element={<Base><Courses/></Base>}/>
+                    <Route path='/course-detail' element={<Base><CoursesDetails/></Base>}/>
+                    <Route path='/mcqs-list' element={<Base><McqsList/></Base>}/>
                     <Route path='/about-us' element={<Base><About/></Base>}/>
                     <Route path='/contact-us' element={<Base><Contact/></Base>}/>
 

@@ -5,13 +5,18 @@ from django.contrib.auth.models import User
 class Test(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
+    icon = models.ImageField(upload_to="course_icons/", blank=True, null=True)  
+    tag = models.ImageField(upload_to="course_tags/", blank=True, null=True)  
 
     def __str__(self):
         return self.name
 
+
 class Subject(models.Model):
     test = models.ForeignKey(Test, related_name='subjects', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    icon = models.ImageField(upload_to="course_icons/", blank=True, null=True)  
+
 
     def __str__(self):
         return self.name

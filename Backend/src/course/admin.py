@@ -4,20 +4,20 @@ from .models import Test, Subject, MCQ, StudentProgress, StudentTest
 # Inline for MCQs in Subject
 class MCQInline(admin.TabularInline):
     model = MCQ
-    extra = 1  # Number of empty rows to display in the form
+    extra = 1  
 
 # Inline for Subjects in Test
 class SubjectInline(admin.TabularInline):
     model = Subject
-    extra = 1  # Number of empty rows to display in the form
+    extra = 1  
 
 class TestAdmin(admin.ModelAdmin):
     inlines = [SubjectInline]
-    list_display = ['name', 'description']  # Customize this as per your fields
+    list_display = ['name', 'description', 'icon', 'tag']  
 
 class SubjectAdmin(admin.ModelAdmin):
     inlines = [MCQInline]
-    list_display = ['name', 'test']  # Customize this as per your fields
+    list_display = ['name', 'test','icon']  
 
 class StudentTestAdmin(admin.ModelAdmin):
     list_display = ['student', 'test', 'date_taken', 'score']

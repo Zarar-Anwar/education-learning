@@ -24,14 +24,15 @@ class SubjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subject
-        fields = ['id', 'name', 'description', 'mcqs']
+        fields = ['id','test', 'name','icon', 'mcqs']
 
 class TestSerializer(serializers.ModelSerializer):
     subjects = SubjectSerializer(many=True, read_only=True)
 
     class Meta:
         model = Test
-        fields = ['id', 'name', 'description', 'subjects']
+        fields = ['id', 'name', 'description','icon','tag', 'subjects']
+
 
 class StudentProgressSerializer(serializers.ModelSerializer):
     class Meta:
