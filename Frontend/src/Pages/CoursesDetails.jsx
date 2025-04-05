@@ -87,7 +87,7 @@ const Courses = () => {
                     }}
                     state={{ subjectId: subject.id }}
                   >
-                    <div className="course__card mb-24">
+                    <div className="course__card mb-24" style={{width:"200px"}}>
                       <div className="course__card__icon"></div>
                       <div
                         className="course__card__content"

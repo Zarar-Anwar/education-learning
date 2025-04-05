@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import api from "../Utils/Axios";
 import { Link } from "react-router-dom";
+import { Store } from "../Utils/Store";
+import { toast } from "react-toastify";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const { state } = useContext(Store)
+  const { UserInfo } = state
 
   useEffect(() => {
     api
@@ -20,6 +24,34 @@ const Courses = () => {
   const filteredCourses = courses.filter((course) =>
     course.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleEnroll = (courseId) => {
+    api.post("/enroll-course/", { test_id: courseId }, {
+      headers: {
+        Authorization: `Token ${UserInfo}`,
+      },
+    })
+      .then((response) => {
+        // Handle success
+        toast.success("Successfully enrolled!");
+      })
+      .catch((error) => {
+        // Handle error
+        if (error.response) {
+          // Server responded with an error code
+          const errorMessage = error.response.data.error || error.response.data.message || "An error occurred";
+          toast.error(errorMessage);
+        } else if (error.request) {
+          // No response received
+          console.error("No response received from the server", error.request);
+          alert("Enrollment failed, please try again.");
+        } else {
+          // Something else caused an error
+          console.error("Error in the request", error.message);
+          alert("Error enrolling in course");
+        }
+      });
+  };
 
   return (
     <>
@@ -73,28 +105,35 @@ const Courses = () => {
           <div className="row">
             {filteredCourses.length > 0 ? (
               filteredCourses.map((course) => (
-                <div className="col-lg-6" key={course.id}>
+                <div className="col-lg-4" key={course.id}>
                   <Link
                     to={{
                       pathname: "/course-detail",
                     }}
                     state={{ courseId: course.id }}
                   >
-                    <div className="course__card mb-24">
+                    <div className="course__card mb-20" style={{ width: "300px" }}>
                       <div className="course__card__icon">
-                        <img
-                          width="130px"
-                          src={`http://localhost:8000${course.icon}`}
-                          alt={course.name}
-                        />
+
                       </div>
                       <div className="course__card__content">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault(); // prevent navigation since Link is wrapping
+                            handleEnroll(course.id);
+                          }}
+                          className="btn btn-primary mt-2"
+                        >
+                          Enroll
+                        </button>
                         <div className="left__block">
+
                           <img
-                            width="130px"
+                            width="100px"
+                            style={{marginTop:"70px"}}
                             src={`http://localhost:8000${course.tag}`}
                             alt="Course Tag"
-                            className="course_tag"
+                            className="course_tag "
                           />
                           <h4 className="mb-4p">
                             <Link
@@ -105,6 +144,8 @@ const Courses = () => {
                             >
                               {course.name}
                             </Link>
+
+
                           </h4>
                           <p className="h6 mb-24">{course.description}</p>
                         </div>
@@ -121,7 +162,7 @@ const Courses = () => {
           </div>
 
           {/* Pagination (Static for now; Implement dynamic pagination if needed) */}
-          <ul className="pagination">
+          <ul className="pagination mt-5">
             <li className="page-item">
               <a href="#" className="page-link arrow" aria-label="prev">
                 <i className="far fa-chevron-left" />

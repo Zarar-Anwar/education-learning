@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Test, Subject, MCQ, StudentProgress, StudentTest
+from .models import Test, Subject, MCQ, StudentProgress, StudentTest,EnrollCourse
 
 # Inline for MCQs in Subject
 class MCQInline(admin.TabularInline):
@@ -29,7 +29,13 @@ class StudentProgressAdmin(admin.ModelAdmin):
     list_filter = ['subject']
     search_fields = ['student__username', 'subject__name']
 
+class EnrollCourseAdmin(admin.ModelAdmin):
+    list_display = ('user', 'test', 'created_at','progress')
+    search_fields = ('user__username', 'test__name')
+    list_filter = ('created_at',)
+
 # Registering the models with the admin
+admin.site.register(EnrollCourse, EnrollCourseAdmin)
 admin.site.register(Test, TestAdmin)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(MCQ)

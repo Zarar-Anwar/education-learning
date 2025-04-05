@@ -24,12 +24,18 @@ const Registration = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        // Client-side validation
+        if (!formData.username || !formData.email || !formData.password1 || !formData.password2) {
+            setError("All fields are required");
+            return;
+        }
+    
         if (formData.password1 !== formData.password2) {
             setError("Passwords do not match");
             return;
         }
-
+    
         try {
             const response = await api.post("auth/registration/", {
                 username: formData.username,
@@ -37,27 +43,37 @@ const Registration = () => {
                 password1: formData.password1,
                 password2: formData.password2,
             });
-
-            // Handle success (e.g., redirect or show success message)
-            toast.success("Registration SuccessFully")
-            navigate("/login")
+    
+            toast.success("Registration successful");
+            navigate("/login");
         } catch (error) {
-            // Handle error (e.g., show error message)
-            if (error.response) {
-                // If the server responded with an error
-                setError(error.response.data.message || "An error occurred");
+            if (error.response && error.response.data) {
+                // Handle server errors
+                const serverErrors = error.response.data;
+                if (typeof serverErrors === "string") {
+                    setError(serverErrors);
+                } else if (serverErrors.detail) {
+                    setError(serverErrors.detail);
+                } else {
+                    // Concatenate multiple field-specific errors, if available
+                    const errorMessages = Object.values(serverErrors)
+                        .flat()
+                        .join(", ");
+                    setError(errorMessages || "An error occurred");
+                }
             } else {
-                // If there was an error with the request itself
+                // Handle network or unexpected errors
                 setError("Network error, please try again later");
             }
         }
     };
+    
 
     return (
         <>
             <section className="form_page">
                 <div className="container">
-                    <div className="row">
+                    <div className="row mt-5">
                         <div className="col-xl-6">
                             <div className="form_block">
                                 <div className="text_block">

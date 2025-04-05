@@ -6,7 +6,7 @@ function AttorneyProtected({children}) {
     const {state}=useContext(Store)
     const {UserInfo}=state
 
-    return  UserInfo && UserInfo.isLawyer ?  children : <Navigate to='/login'/>
+    return  UserInfo && UserInfo ?  children : <Navigate to='/login'/>
 }
 
 export default AttorneyProtected

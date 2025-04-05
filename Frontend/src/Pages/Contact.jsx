@@ -90,8 +90,8 @@ const Contact = () => {
                                 <br/> Love To Hear From <span className="fm-sec">You!</span>
                             </h2>
                             <p className="mb-32">
-                                Lorem ipsum dolor sit amet consectetur. Non convallis sed id <br/>
-                                aliquam tempus. Volutpat tortor tincidunt egestas sit risus donec.
+                                Contact us Here <br/>
+                                
                             </p>
                             <form
                                 onSubmit={handleSubmit}

@@ -51,3 +51,16 @@ class StudentTest(models.Model):
 
     def __str__(self):
         return f'{self.student.username} - {self.test.name} - {self.score}%'
+
+
+class EnrollCourse(models.Model):
+    user = models.ForeignKey(User, related_name='enrolled_courses', on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, related_name='enrollments', on_delete=models.CASCADE)  # test is your course
+    created_at = models.DateTimeField(auto_now_add=True)
+    progress = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)  # in percentage: 0.00–100.00
+
+    class Meta:
+        unique_together = ('user', 'test')  # Prevent duplicate enrollments
+
+    def __str__(self):
+        return f"{self.user.username} enrolled in {self.test.name} ({self.progress}%)"

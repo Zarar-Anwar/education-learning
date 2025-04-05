@@ -3,7 +3,7 @@ from rest_framework import serializers
 from ..core.models import ContactForm
 from rest_framework import serializers
 
-from ..course.models import MCQ, Subject, Test, StudentProgress, StudentTest
+from ..course.models import MCQ, Subject, Test, StudentProgress, StudentTest,EnrollCourse
 
 
 class ContactFormSerializer(serializers.ModelSerializer):
@@ -12,6 +12,16 @@ class ContactFormSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class EnrollCourseSerializer(serializers.ModelSerializer):
+    # You can include fields from the related 'Test' model
+    course_name = serializers.CharField(source='test.name')
+    course_description = serializers.CharField(source='test.description')
+    course_tag = serializers.ImageField(source='test.tag')
+    course_icon = serializers.ImageField(source='test.icon')
+
+    class Meta:
+        model = EnrollCourse
+        fields = ['id', 'test','user','course_name', 'course_description', 'course_tag','course_icon', 'progress']
 
 
 class MCQSerializer(serializers.ModelSerializer):
