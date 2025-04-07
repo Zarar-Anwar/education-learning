@@ -160,9 +160,8 @@ const Courses = () => {
               </div>
             )}
           </div>
-
-          {/* Pagination (Static for now; Implement dynamic pagination if needed) */}
-          <ul className="pagination mt-5">
+          
+          <ul className="pagination p-5" style={{marginTop:"50px"}}>
             <li className="page-item">
               <a href="#" className="page-link arrow" aria-label="prev">
                 <i className="far fa-chevron-left" />

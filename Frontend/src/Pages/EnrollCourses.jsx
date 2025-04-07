@@ -24,7 +24,7 @@ const EnrollCourses = () => {
             .catch((error) => {
                 console.error("Error fetching enrolled courses:", error);
             });
-        }, []);
+    }, []);
 
     // Handle course deletion
     const handleDeleteCourse = (courseId, event) => {
@@ -104,7 +104,7 @@ const EnrollCourses = () => {
                                         to={{
                                             pathname: "/course-detail",
                                         }}
-                                        state={{ courseId: course.id }}
+                                        state={{ courseId: course.test }}
                                     >
                                         <div className="course__card mb-20" style={{ width: "300px" }}>
                                             <div className="course__card__content">
@@ -114,10 +114,27 @@ const EnrollCourses = () => {
                                                 >
                                                     Delete
                                                 </button>
+                                                <div className="progress mt-3" style={{ height: "8px", borderRadius: "5px", backgroundColor: "#eee" }}>
+                                                    <div
+                                                        className="progress-bar"
+                                                        role="progressbar"
+                                                        style={{
+                                                            width: `${course.progress || 0}%`,
+                                                            backgroundColor: "#007bff",
+                                                            borderRadius: "5px",
+                                                        }}
+                                                        aria-valuenow={course.progress || 0}
+                                                        aria-valuemin="0"
+                                                        aria-valuemax="100"
+                                                    />
+                                                </div>
+                                                <small className="text-muted mt-1 d-block">
+                                                    Progress: {course.progress || 0}%
+                                                </small>
                                                 <div className="left__block">
                                                     <img
                                                         width="100px"
-                                                        style={{marginTop:"70px"}}
+                                                        style={{ marginTop: "70px" }}
                                                         src={`http://localhost:8000${course.course_icon}`}
                                                         alt="Course Tag"
                                                         className="course_tag"

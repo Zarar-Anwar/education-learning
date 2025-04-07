@@ -4,29 +4,41 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Courses = () => {
   const [subjects, setSubjects] = useState([]);
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+
   const location = useLocation();
   const navigate = useNavigate();
   const { courseId } = location.state || {};
 
-
   useEffect(() => {
-    // if (!courseId) {
-    //   navigate("/courses"); // Redirect if no courseId is passed
-    //   return;
-    // }
+    if (!courseId) {
+      navigate("/courses");
+      return;
+    }
+
     api
       .get(`/subjects/`)
       .then((response) => {
-        const filteredSubjects = response.data.filter(
+        const matched = response.data.filter(
           (subject) => subject.test === courseId
         );
-        setSubjects(filteredSubjects);
+        setSubjects(matched);
+        setFilteredSubjects(matched);
       })
       .catch((error) => {
-        console.error("Error fetching course:", error);
+        console.error("Error fetching subjects:", error);
       });
   }, [courseId, navigate]);
+
+  useEffect(() => {
+    const query = searchQuery.toLowerCase();
+    setFilteredSubjects(
+      subjects.filter((subject) =>
+        subject.name.toLowerCase().includes(query)
+      )
+    );
+  }, [searchQuery, subjects]);
 
   return (
     <>
@@ -37,10 +49,7 @@ const Courses = () => {
               <h1>Course Subjects</h1>
               <img src="assets/media/shapes/tag-2.png" alt="" className="tag" />
             </div>
-            <div
-              className="educate-tilt"
-              data-tilt-options='{ "glare": false, "maxGlare": 0, "maxTilt": 2, "speed": 700, "scale": 1 }'
-            >
+            <div className="educate-tilt">
               <img
                 src="assets/media/resources/page_title.png"
                 alt=""
@@ -61,7 +70,7 @@ const Courses = () => {
           <div className="filter_row">
             <div className="right_block">
               <h6 className="dark-gray">
-                Showing {subjects.length} of {subjects.length} results
+                Showing {filteredSubjects.length} of {subjects.length} results
               </h6>
               <form className="search_bar" onSubmit={(e) => e.preventDefault()}>
                 <button type="submit">
@@ -77,22 +86,15 @@ const Courses = () => {
               </form>
             </div>
           </div>
+
           <div className="row">
-            {subjects.length > 0 ? (
-              subjects.map((subject) => (
+            {filteredSubjects.length > 0 ? (
+              filteredSubjects.map((subject) => (
                 <div className="col-lg-3" key={subject.id}>
-                  <Link
-                    to={{
-                      pathname: "/mcqs-list",
-                    }}
-                    state={{ subjectId: subject.id }}
-                  >
-                    <div className="course__card mb-24" style={{width:"200px"}}>
+                  <Link to="/mcqs-list" state={{ subjectId: subject.id }}>
+                    <div className="course__card mb-24" style={{ width: "200px" }}>
                       <div className="course__card__icon"></div>
-                      <div
-                        className="course__card__content"
-                        style={{ marginBottom: "150px" }}
-                      >
+                      <div className="course__card__content" style={{ marginBottom: "150px" }}>
                         <div className="left__block">
                           <img
                             style={{ marginTop: "30px" }}
@@ -101,16 +103,7 @@ const Courses = () => {
                             alt="Course Tag"
                             className="course_tag"
                           />
-                          <h4 className="mb-4p">
-                            <Link
-                              to={{
-                                pathname: "/mcqs-list",
-                              }}
-                              state={{ subjectId: subject.id }}
-                            >
-                              {subject.name}
-                            </Link>
-                          </h4>
+                          <h4 className="mb-4p">{subject.name}</h4>
                         </div>
                       </div>
                     </div>
@@ -123,35 +116,6 @@ const Courses = () => {
               </div>
             )}
           </div>
-
-          {/* Pagination (Static for now; Implement dynamic pagination if needed) */}
-          <ul className="pagination">
-            <li className="page-item">
-              <a href="#" className="page-link arrow" aria-label="prev">
-                <i className="far fa-chevron-left" />
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link current" href="#">
-                1
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a href="#" className="page-link arrow" aria-label="next">
-                <i className="far fa-chevron-right" />
-              </a>
-            </li>
-          </ul>
         </div>
       </section>
     </>

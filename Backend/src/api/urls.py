@@ -12,8 +12,6 @@ urlpatterns = [
     path('enrolled-courses/', enrolled_courses, name='enroll-course'),
     path('enrolled-courses/<int:course_id>/delete/', delete_enrollment, name='delete_enrollment'),  # New delete endpoint
 
-
-
 ]
 
 urlpatterns += [
