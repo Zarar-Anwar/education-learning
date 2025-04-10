@@ -3,8 +3,8 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from ..core.models import ContactForm
-from ..course.models import Test, Subject, MCQ, EnrollCourse
-from .serializers import ContactFormSerializer, TestSerializer, SubjectSerializer,MCQSerializer,EnrollCourseSerializer
+from ..course.models import Test, Subject, MCQ, EnrollCourse,Material
+from .serializers import ContactFormSerializer, TestSerializer, SubjectSerializer,MCQSerializer,EnrollCourseSerializer,MaterialSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -36,6 +36,14 @@ class McqsListView(APIView):
         mcqs = MCQ.objects.all()
         serializer = MCQSerializer(mcqs, many=True)
         return Response(serializer.data)
+    
+
+class MaterialListView(APIView):
+    def get(self, request):
+        mcqs = Material.objects.all()
+        serializer = MaterialSerializer(mcqs, many=True)
+        return Response(serializer.data)
+    
     
 
 
@@ -78,13 +86,13 @@ def enrolled_courses(request):
 
 
 @api_view(['DELETE'])
-def delete_enrollment(request, course_id):
+def delete_enrollment(request, courseId):
     # Ensure the user is authenticated
     user = request.user
     
     try:
         # Check if the user is enrolled in the course
-        course = Test.objects.get(id=course_id)
+        course = Test.objects.get(id=courseId)
         enrollment = EnrollCourse.objects.get(user=user, test=course)
         
         # Delete the enrollment record

@@ -21,6 +21,17 @@ class Subject(models.Model):
     def __str__(self):
         return self.name
 
+
+class Material(models.Model):
+    subject = models.ForeignKey(Subject, related_name='material', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    pdf = models.FileField(upload_to='materials/pdfs/')
+
+    def __str__(self):
+        return self.name
+
+
+
 class MCQ(models.Model):
     subject = models.ForeignKey(Subject, related_name='mcqs', on_delete=models.CASCADE)
     question = models.CharField(max_length=255)

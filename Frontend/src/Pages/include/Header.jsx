@@ -4,13 +4,13 @@ import { Store } from '../../Utils/Store';
 import { toast } from 'react-toastify';
 
 function Header() {
-    const { state , dispatch } = useContext(Store)
+    const { state, dispatch } = useContext(Store)
     const { UserInfo } = state
-     const handleLogout = () => {
-            localStorage.removeItem("UserInfo");
-            dispatch({ type: "UserLoggedOut" });
-            toast.warning("Logged Out Successfully");
-        };
+    const handleLogout = () => {
+        localStorage.removeItem("UserInfo");
+        dispatch({ type: "UserLoggedOut" });
+        toast.warning("Logged Out Successfully");
+    };
     return (
         <>
             <header>
@@ -45,32 +45,18 @@ function Header() {
                             </div>
                             <div className="main-menu__right">
                                 {UserInfo ?
-                                  <div className="dropdown d-xl-flex d-none">
-                                  <button
-                                    className="btn btn-warning dropdown-toggle"
-                                    type="button"
-                                    id="accountDropdown"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    Account
-                                  </button>
-                                  <ul className="dropdown-menu" aria-labelledby="accountDropdown">
-                                    <li>
-                                      <Link to="/profile" className="dropdown-item">Profile</Link>
-                                    </li>
-                                    <li>
-                                      <Link to="/enroll-course" className="dropdown-item">Enroll Courses</Link>
-                                    </li>
-                                    <li>
-                                      <hr className="dropdown-divider" />
-                                    </li>
-                                    <li>
-                                      <Link onClick={handleLogout} className="dropdown-item">Logout</Link>
-                                    </li>
-                                  </ul>
-                                </div>
-                                
+                                    <div className="d-xl-flex d-none">
+                                        <Link to="/student-dashboard">
+                                            <button
+                                                className="btn btn-warning dropdown-toggle"
+                                                type="button"
+                                            >
+                                                Account
+                                            </button>
+
+                                        </Link>
+                                    </div>
+
                                     : <>
                                         <Link to="/login" className="main-menu__login">
                                             <i className="fal fa-user" />
@@ -121,33 +107,19 @@ function Header() {
                                 </div>
                             </div>
                             <div className="main-menu__right">
-                            {UserInfo ?
-                                  <div className="dropdown d-xl-flex d-none">
-                                  <button
-                                    className="btn btn-warning dropdown-toggle"
-                                    type="button"
-                                    id="accountDropdown"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    Account
-                                  </button>
-                                  <ul className="dropdown-menu" aria-labelledby="accountDropdown">
-                                    <li>
-                                      <Link to="/profile" className="dropdown-item">Profile</Link>
-                                    </li>
-                                    <li>
-                                      <Link to="/enroll-course" className="dropdown-item">Enroll Courses</Link>
-                                    </li>
-                                    <li>
-                                      <hr className="dropdown-divider" />
-                                    </li>
-                                    <li>
-                                      <Link onClick={handleLogout} className="dropdown-item">Logout</Link>
-                                    </li>
-                                  </ul>
-                                </div>
-                                
+                                {UserInfo ?
+                                    <div className="dropdown d-xl-flex d-none">
+                                        <Link to="/student-dashboard">
+                                            <button
+                                                className="btn btn-warning dropdown-toggle"
+                                                type="button"
+                                            >
+                                                Account
+                                            </button>
+
+                                        </Link>
+                                    </div>
+
                                     : <>
                                         <Link to="/login" className="main-menu__login">
                                             <i className="fal fa-user" />

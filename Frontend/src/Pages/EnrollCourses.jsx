@@ -49,33 +49,8 @@ const EnrollCourses = () => {
 
     return (
         <>
-            <section className="page_title_banner">
-                <div className="container">
-                    <div className="content">
-                        <div className="title">
-                            <h1>Enrolled Courses</h1>
-                            <img src="assets/media/shapes/tag-2.png" alt="" className="tag" />
-                        </div>
-                        <div
-                            className="educate-tilt"
-                            data-tilt-options='{ "glare": false, "maxGlare": 0, "maxTilt": 2, "speed": 700, "scale": 1 }'
-                        >
-                            <img
-                                src="assets/media/resources/page_title.png"
-                                alt=""
-                                className="main_img"
-                            />
-                        </div>
-                        <img
-                            src="assets/media/shapes/circle-lines-2.png"
-                            alt=""
-                            className="circle_vector"
-                        />
-                    </div>
-                </div>
-            </section>
-
-            <section className="py-60 mb-5">
+        
+            <section className="py-60 mb-5" style={{marginTop:"60px"}}>
                 <div className="container">
                     <div className="filter_row">
                         <div className="right_block">

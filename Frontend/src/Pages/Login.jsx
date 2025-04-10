@@ -42,7 +42,7 @@ const Login = () => {
             localStorage.setItem("userToken", response.data.key); // Store in localStorage
             dispatch({ type: "UserLoggedIn", payload: response.data.key }); // Update global state
             toast.success("Login successful");
-            navigate("/");
+            navigate("/student-dashboard");
         } catch (error) {
             if (error.response && error.response.data) {
                 // Handle server-side errors

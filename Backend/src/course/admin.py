@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Test, Subject, MCQ, StudentProgress, StudentTest,EnrollCourse
+from .models import Test, Subject, MCQ, StudentProgress, StudentTest,EnrollCourse,Material
 
 # Inline for MCQs in Subject
 class MCQInline(admin.TabularInline):
@@ -9,7 +9,19 @@ class MCQInline(admin.TabularInline):
 # Inline for Subjects in Test
 class SubjectInline(admin.TabularInline):
     model = Subject
-    extra = 1  
+    extra = 1
+
+@admin.register(Material)
+class MaterialAdmin(admin.ModelAdmin):
+    list_display = ('name', 'subject', 'pdf_link')
+    search_fields = ('name', 'subject__name')
+
+    def pdf_link(self, obj):
+        if obj.pdf:
+            return f"<a href='{obj.pdf.url}' target='_blank'>View PDF</a>"
+        return "No file"
+    pdf_link.allow_tags = True
+    pdf_link.short_description = "PDF File"  
 
 class TestAdmin(admin.ModelAdmin):
     inlines = [SubjectInline]

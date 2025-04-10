@@ -3,6 +3,7 @@ import api from "../Utils/Axios";
 import { Link } from "react-router-dom";
 import { Store } from "../Utils/Store";
 import { toast } from "react-toastify";
+import CourseComponent from "./include/CourseComponent";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -105,54 +106,7 @@ const Courses = () => {
           <div className="row">
             {filteredCourses.length > 0 ? (
               filteredCourses.map((course) => (
-                <div className="col-lg-4" key={course.id}>
-                  <Link
-                    to={{
-                      pathname: "/course-detail",
-                    }}
-                    state={{ courseId: course.id }}
-                  >
-                    <div className="course__card mb-20" style={{ width: "300px" }}>
-                      <div className="course__card__icon">
-
-                      </div>
-                      <div className="course__card__content">
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault(); // prevent navigation since Link is wrapping
-                            handleEnroll(course.id);
-                          }}
-                          className="btn btn-primary mt-2"
-                        >
-                          Enroll
-                        </button>
-                        <div className="left__block">
-
-                          <img
-                            width="100px"
-                            style={{marginTop:"70px"}}
-                            src={`http://localhost:8000${course.tag}`}
-                            alt="Course Tag"
-                            className="course_tag "
-                          />
-                          <h4 className="mb-4p">
-                            <Link
-                              to={{
-                                pathname: "/course-detail",
-                              }}
-                              state={{ courseId: course.id }}
-                            >
-                              {course.name}
-                            </Link>
-
-
-                          </h4>
-                          <p className="h6 mb-24">{course.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
+                <CourseComponent course={course} />
               ))
             ) : (
               <div className="text-center">
@@ -160,8 +114,8 @@ const Courses = () => {
               </div>
             )}
           </div>
-          
-          <ul className="pagination p-5" style={{marginTop:"50px"}}>
+
+          <ul className="pagination p-5" style={{ marginTop: "50px" }}>
             <li className="page-item">
               <a href="#" className="page-link arrow" aria-label="prev">
                 <i className="far fa-chevron-left" />

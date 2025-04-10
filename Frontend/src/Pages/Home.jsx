@@ -5,10 +5,13 @@ import api from "../Utils/Axios";
 import { Link } from "react-router-dom";
 import { Store } from "../Utils/Store";
 import { useContext } from "react";
+import { toast } from "react-toastify";
+import CourseComponent from "./include/CourseComponent";
 function Home() {
   const [courses, setCourses] = useState([]);
   const { state } = useContext(Store);
-  const { ContactInfo } = state;
+  const {UserInfo, ContactInfo } = state;
+
 
   useEffect(() => {
     api
@@ -382,122 +385,20 @@ function Home() {
           </div>
           <div className="row">
             {/* MDCAT Preparation */}
-            <div
-              className="col-xl-4 col-md-6 wow fadeInUp"
-              data-wow-delay="150ms"
-              style={{
-                visibility: "visible",
-                animationDelay: "150ms",
-                animationName: "fadeInUp",
-              }}
-            >
-              <div className="course__category__card_1 mb-24">
-                <div className="course__category__card_text">
-                  <h4 className="course__category__card_title h4 mb-16">
-                    MDCAT Preparation
-                  </h4>
-                  <p className="mb-40">
-                    Prepare for Pakistan's medical college entrance test with expert guidance and practice materials.
-                  </p>
-                  <ul className="category__info p-0 mb-8">
-                    <li>
-                      <i className="fas fa-star" /> 4.8
-                    </li>
-                    <li>
-                      <i className="fal fa-graduation-cap" /> 20 Teachers
-                    </li>
-                    <li>
-                      <i className="fal fa-clock" /> 100+
-                    </li>
-                  </ul>
-                </div>
-                <img
-                  src="/assets/media/courses/categories/c-2.png"
-                  alt="MDCAT Preparation"
-                  className="image"
-                />
-              </div>
-            </div>
 
-            {/* ETEA Preparation */}
-            <div
-              className="col-xl-4 col-md-6 wow fadeInUp"
-              data-wow-delay="200ms"
-              style={{
-                visibility: "visible",
-                animationDelay: "200ms",
-                animationName: "fadeInUp",
-              }}
-            >
-              <div className="course__category__card_1 mb-24">
-                <div className="course__category__card_text">
-                  <h4 className="course__category__card_title h4 mb-16">
-                    ETEA Preparation
-                  </h4>
-                  <p className="mb-40">
-                    Achieve your dream of excelling in ETEA with comprehensive test preparation resources.
-                  </p>
-                  <ul className="category__info p-0 mb-8">
-                    <li>
-                      <i className="fas fa-star" /> 4.7
-                    </li>
-                    <li>
-                      <i className="fal fa-graduation-cap" /> 15 Teachers
-                    </li>
-                    <li>
-                      <i className="fal fa-clock" /> 80+
-                    </li>
-                  </ul>
-                </div>
-                <img
-                  src="/assets/media/courses/categories/c-6.png"
-                  alt="ETEA Preparation"
-                  className="image"
-                />
+            {courses.length > 0 ? (
+              courses.map((course, index) => (
+               <CourseComponent course={course} />
+              ))
+            ) : (
+              <div className="text-center">
+                <h6 className="text-danger">No Courses Found</h6>
               </div>
-            </div>
-
-            {/* NAT Preparation */}
-            <div
-              className="col-xl-4 col-md-6 wow fadeInUp"
-              data-wow-delay="250ms"
-              style={{
-                visibility: "visible",
-                animationDelay: "250ms",
-                animationName: "fadeInUp",
-              }}
-            >
-              <div className="course__category__card_1 mb-24">
-                <div className="course__category__card_text">
-                  <h4 className="course__category__card_title h4 mb-16">
-                    NAT Preparation
-                  </h4>
-                  <p className="mb-40">
-                    Boost your chances of success in the NTS NAT exam with targeted lessons and mock tests.
-                  </p>
-                  <ul className="category__info p-0 mb-8">
-                    <li>
-                      <i className="fas fa-star" /> 4.9
-                    </li>
-                    <li>
-                      <i className="fal fa-graduation-cap" /> 18 Teachers
-                    </li>
-                    <li>
-                      <i className="fal fa-clock" /> 90+
-                    </li>
-                  </ul>
-                </div>
-                <img
-                  src="/assets/media/courses/categories/c-3.png"
-                  alt="NAT Preparation"
-                  className="image"
-                />
-              </div>
-            </div>
+            )}
           </div>
 
-      </div>
-    </section >
+        </div>
+      </section >
 
 
 
@@ -571,194 +472,79 @@ function Home() {
       </section>
 
       <section className="testimonials py-60">
-  <div className="container">
-    <div className="row">
-      <div className="col-xl-5">
-        <div className="testimonials_text_block">
-          <img
-            src="assets/media/shapes/quote3d.png"
-            alt="quote icon"
-            className="quote_icon"
-          />
-          <h6 className="color-primary mb-8">–––– Testimonials</h6>
-          <h2 className="mb-16">
-            Student’s Stories! Some Awesome Comments By Our{" "}
-            <span className="fm-sec">Students!</span>
-          </h2>
-          <p>
-            Hear what our students have to say about their learning journey with us. Our courses have empowered them to grow, achieve their goals, and gain valuable knowledge that has transformed their lives.
-          </p>
-          <blockquote className="testimonial">
-            <p>
-              "The courses provided here have exceeded my expectations. The instructors are highly knowledgeable and always ready to assist. The hands-on approach to learning has been incredibly beneficial. I feel more confident and equipped to tackle real-world challenges."
-            </p>
-            <footer>— Inamullah, Web Development Student</footer>
-          </blockquote>
-        </div>
-      </div>
-
-      <div className="col-xl-7 col-lg-10 offset-xl-0 offset-lg-1">
-        <div className="testimonials_slider_1_block">
-          <div className="testimonials_slider slick-slider">
-            <div className="slick-list">
-              <div className="slick-track">
-                <div className="testimonial_card">
-                  <div className="testimonial_card_img_block">
-                    <img
-                      src="assets/media/users/bu.png"
-                      alt="user image"
-                      className="user_img"
-                    />
-                  </div>
-                  <div className="testimonial_card_content_block">
-                    <h4>Nadeem Mubarik</h4>
-                    <span>
-                      <i className="fas fa-star" />
-                      <i className="fas fa-star" />
-                      <i className="fas fa-star" />
-                      <i className="fas fa-star" />
-                      <i className="fas fa-star" />
-                    </span>
-                    <p>
-                      "The ETEA preparation course gave me the confidence I needed to excel. The mock tests were incredibly realistic!"
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <ul className="slick-dots">
-              <li className="slick-active">
-                <button type="button" aria-selected="true">1</button>
-              </li>
-              <li>
-                <button type="button">2</button>
-              </li>
-              <li>
-                <button type="button">3</button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-      <section className="py-60">
         <div className="container">
-          <div className="section-title mb-48">
-            <div className="heading">
-              <h6 className="color-primary mb-8">–––– Blogs</h6>
-              <h2>
-                Latest News By
-                <br /> Talented <span className="fm-sec">Authors!</span>
-              </h2>
+          <div className="row">
+            <div className="col-xl-5">
+              <div className="testimonials_text_block">
+                <img
+                  src="assets/media/shapes/quote3d.png"
+                  alt="quote icon"
+                  className="quote_icon"
+                />
+                <h6 className="color-primary mb-8">–––– Testimonials</h6>
+                <h2 className="mb-16">
+                  Student’s Stories! Some Awesome Comments By Our{" "}
+                  <span className="fm-sec">Students!</span>
+                </h2>
+                <p>
+                  Hear what our students have to say about their learning journey with us. Our courses have empowered them to grow, achieve their goals, and gain valuable knowledge that has transformed their lives.
+                </p>
+                <blockquote className="testimonial">
+                  <p>
+                    "The courses provided here have exceeded my expectations. The instructors are highly knowledgeable and always ready to assist. The hands-on approach to learning has been incredibly beneficial. I feel more confident and equipped to tackle real-world challenges."
+                  </p>
+                  <footer>— Inamullah, Web Development Student</footer>
+                </blockquote>
+              </div>
             </div>
 
-          </div>
-          <div className="row">
-            <div className="col-lg-4 col-md-6">
-              <div className="blog_card mb-24 mb-xl-0">
-                <div className="blog_card_img_block">
-                  <img src="assets/media/blog/b-1.png" alt="" />
-                  <p className="date">9 May 2024</p>
-                </div>
-                <div className="blog_card_text_block">
-                  <h5 className="mb-8">
-                    <a className="blog_title" href="blog-detail.html">
-                      Remote Learning Tips: Thrive in Online Classes
-                    </a>
-                  </h5>
-                  <p className="mb-24">
-                    Discover effective strategies to excel in online classes. Learn
-                    how to stay motivated, manage your time, and utilize digital
-                    tools to enhance your learning experience.
-                  </p>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="author">
-                      <img src="assets/media/users/u-1.png" alt="" />
-                      <h6 className="dark-gray">Michal Clark</h6>
+            <div className="col-xl-7 col-lg-10 offset-xl-0 offset-lg-1">
+              <div className="testimonials_slider_1_block">
+                <div className="testimonials_slider slick-slider">
+                  <div className="slick-list">
+                    <div className="slick-track">
+                      <div className="testimonial_card">
+                        <div className="testimonial_card_img_block">
+                          <img
+                            src="assets/media/users/bu.png"
+                            alt="user image"
+                            className="user_img"
+                          />
+                        </div>
+                        <div className="testimonial_card_content_block">
+                          <h4>Nadeem Mubarik</h4>
+                          <span>
+                            <i className="fas fa-star" />
+                            <i className="fas fa-star" />
+                            <i className="fas fa-star" />
+                            <i className="fas fa-star" />
+                            <i className="fas fa-star" />
+                          </span>
+                          <p>
+                            "The ETEA preparation course gave me the confidence I needed to excel. The mock tests were incredibly realistic!"
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <a
-                      href="blog-detail.html"
-                      className="h6 color-primary educate_link_btn"
-                    >
-                      Read More
-                      <i className="far fa-chevron-right" />
-                    </a>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <div className="blog_card mb-24 mb-xl-0">
-                <div className="blog_card_img_block">
-                  <img src="assets/media/blog/b-2.png" alt="" />
-                  <p className="date">9 May 2024</p>
-                </div>
-                <div className="blog_card_text_block">
-                  <h5 className="mb-8">
-                    <a className="blog_title" href="blog-detail.html">
-                      The Power of Lifelong Learning: Why It Matters?
-                    </a>
-                  </h5>
-                  <p className="mb-24">
-                    Explore the importance of lifelong learning and how it contributes
-                    to personal growth and career advancement. Discover key benefits
-                    and tips for embracing continuous education.
-                  </p>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="author">
-                      <img src="assets/media/users/u-2.png" alt="" />
-                      <h6 className="dark-gray">Jeremy Jhon</h6>
-                    </div>
-                    <a
-                      href="blog-detail.html"
-                      className="h6 color-primary educate_link_btn"
-                    >
-                      Read More
-                      <i className="far fa-chevron-right" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <div className="blog_card">
-                <div className="blog_card_img_block">
-                  <img src="assets/media/blog/b-3.png" alt="" />
-                  <p className="date">9 May 2024</p>
-                </div>
-                <div className="blog_card_text_block">
-                  <h5 className="mb-8">
-                    <a className="blog_title" href="blog-detail.html">
-                      The Art of Effective Note-Taking: Strategies for Students
-                    </a>
-                  </h5>
-                  <p className="mb-24">
-                    Learn practical techniques for note-taking that improve
-                    comprehension and retention. These strategies will help you stay
-                    organized and focused during your studies.
-                  </p>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="author">
-                      <img src="assets/media/users/u-3.png" alt="" />
-                      <h6 className="dark-gray">Yuki Kabuto</h6>
-                    </div>
-                    <a
-                      href="blog-detail.html"
-                      className="h6 color-primary educate_link_btn"
-                    >
-                      Read More
-                      <i className="far fa-chevron-right" />
-                    </a>
-                  </div>
+                  <ul className="slick-dots">
+                    <li className="slick-active">
+                      <button type="button" aria-selected="true">1</button>
+                    </li>
+                    <li>
+                      <button type="button">2</button>
+                    </li>
+                    <li>
+                      <button type="button">3</button>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+
 
 
       <section className="py-60">

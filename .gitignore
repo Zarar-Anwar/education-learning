@@ -142,5 +142,4 @@ migrations/
 .idea/
 media/
 db.sqlite3
-assets/
 myprojectenv/
