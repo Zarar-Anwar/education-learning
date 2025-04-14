@@ -15,8 +15,10 @@ import StudentProfile from "./Pages/StudentProfile";
 import EnrollCourses from "./Pages/EnrollCourses";
 import AttorneyProtected from "./Security/Protected";
 import Dashboard from "./Pages/dashboard/Dashboard";
-import CourseDetailEnroll from "./Pages/dashboard/CourseDetailEnroll";
 import Enrolled from "./Pages/dashboard/Enrolled";
+import CoursesDetailEnroll from "./Pages/dashboard/CourseDetailEnroll";
+import Material from "./Pages/dashboard/Material";
+import MCQTest from "./Pages/dashboard/McqTest";
 
 
 function App() {
@@ -43,8 +45,10 @@ function App() {
                     {/* Student Routes */}
                     <Route path='/student-dashboard' element={<Base2><Dashboard /></Base2>} />
                     <Route path='/student-enrolled' element={<Base2><Enrolled /></Base2>} />
-                    <Route path='/student-enroll-detail' element={<Base2><CourseDetailEnroll /></Base2>} />
+                    <Route path='/student-enroll-detail' element={<Base2><CoursesDetailEnroll /></Base2>} />
+                    <Route path='/student-enroll-material' element={<Base2><Material /></Base2>} />
                     <Route path='/student-dashboard' element={<Base2><Dashboard /></Base2>} />
+                    <Route path='/student-mcqs' element={<Base2><MCQTest /></Base2>} />
 
 
                     <Route path='/login' element={<Login />} />

@@ -9,7 +9,6 @@ const Login = () => {
     const { dispatch } = useContext(Store);
 
     const [formData, setFormData] = useState({
-        username: "",
         email: "",
         password: "",
     });
@@ -27,7 +26,7 @@ const Login = () => {
         e.preventDefault();
 
         // Client-side validation
-        if (!formData.username || !formData.email || !formData.password) {
+        if ( !formData.email || !formData.password) {
             setError("All fields are required");
             return;
         }
@@ -102,18 +101,7 @@ const Login = () => {
                                     {error && <div className="error-message" style={{ color: "red" }}>{error}</div>}
 
                                     <form onSubmit={handleSubmit} className="form-validator" noValidate="novalidate">
-                                        <div className="mb-24">
-                                            <input
-                                                type="text"
-                                                className="form-control p_lg"
-                                                id="username"
-                                                name="username"
-                                                value={formData.username}
-                                                onChange={handleInputChange}
-                                                placeholder="Username"
-                                                required
-                                            />
-                                        </div>
+                                       
                                         <div className="mb-24">
                                             <input
                                                 type="email"

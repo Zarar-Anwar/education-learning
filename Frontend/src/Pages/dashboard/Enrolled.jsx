@@ -29,12 +29,12 @@ const Enrolled = () => {
     }, []);
 
     // Handle course deletion
-   
+
 
     return (
         <>
-          
-            <section className="py-60 mb-5" style={{marginTop:"50px"}}>
+
+            <section className="py-60 mb-5" style={{ marginTop: "50px" }}>
                 <div className="container">
                     <div className="filter_row">
                         <div className="right_block">
@@ -58,7 +58,14 @@ const Enrolled = () => {
                     <div className="row">
                         {courses.length > 0 ? (
                             courses.map((course) => (
-                               <CourseEnrollCompo course={course} />
+                                <Link
+                                    to={{
+                                        pathname: "/student-enroll-detail",
+                                    }}
+                                    state={{ courseId: course.test }}
+                                >
+                                    <CourseEnrollCompo course={course} />
+                                </Link>
                             ))
                         ) : (
                             <div className="text-center">

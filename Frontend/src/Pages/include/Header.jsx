@@ -36,7 +36,6 @@ function Header() {
                                         <li className="dropdown">
                                             <Link to="/about-us">ABOUT</Link>
                                         </li>
-
                                         <li>
                                             <Link to="/contact-us">CONTACT</Link>
                                         </li>
@@ -48,7 +47,7 @@ function Header() {
                                     <div className="d-xl-flex d-none">
                                         <Link to="/student-dashboard">
                                             <button
-                                                className="btn btn-warning dropdown-toggle"
+                                                className="btn btn-warning "
                                                 type="button"
                                             >
                                                 Account
@@ -108,10 +107,10 @@ function Header() {
                             </div>
                             <div className="main-menu__right">
                                 {UserInfo ?
-                                    <div className="dropdown d-xl-flex d-none">
+                                    <div className=" d-xl-flex d-none">
                                         <Link to="/student-dashboard">
                                             <button
-                                                className="btn btn-warning dropdown-toggle"
+                                                className="btn btn-warning "
                                                 type="button"
                                             >
                                                 Account

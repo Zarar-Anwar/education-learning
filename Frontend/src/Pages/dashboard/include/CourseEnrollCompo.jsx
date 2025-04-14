@@ -29,48 +29,65 @@ const CourseEnrollCompo = ({ course }) => {
 
     return (
         <>
-           
-                <div
-                    key={course.id}
-                    className="col-xl-4 col-md-6 wow fadeInUp"
-                    data-wow-delay="150ms"
-                    style={{
-                        visibility: "visible",
-                        animationDelay: "150ms",
-                        animationName: "fadeInUp",
-                    }}
-                >
-                    <div className="course__category__card_1 mb-24">
-                        <div className="course__category__card_text">
-                            <h4 className="course__category__card_title h4 mb-16">
-                                {course.course_name}
-                            </h4>
-                            <p className="mb-40">{course.course_description}</p>
-                            <ul className="category__info p-0 mb-8">
-                                <li>
-                                    <i className="fal fa-graduation-cap" /> 20 Student Enrolled
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="text-center">
-                            <img
-                                width="60%"
-                                src={`http://localhost:8000/${course.course_icon}`}
-                                alt="Course Icon"
-                                className="image"
+
+            <div
+                key={course.id}
+                className="col-xl-4 col-md-6 wow fadeInUp"
+                data-wow-delay="150ms"
+                style={{
+                    visibility: "visible",
+                    animationDelay: "150ms",
+                    animationName: "fadeInUp",
+                }}
+            >
+                <div className="course__category__card_1 mb-24">
+                    <div className="course__category__card_text">
+                        <h4 className="course__category__card_title h4 mb-16">
+                            {course.course_name}
+                        </h4>
+                        <p className="mb-40">{course.course_description}</p>
+                        <div className="progress mt-3 mb-3" style={{ height: "8px", borderRadius: "5px", backgroundColor: "#eee" }}>
+                            <div
+                                className="progress-bar"
+                                role="progressbar"
+                                style={{
+                                    width: `${course.progress || 0}%`,
+                                    backgroundColor: "#007bff",
+                                    borderRadius: "5px",
+                                }}
+                                aria-valuenow={course.progress || 0}
+                                aria-valuemin="0"
+                                aria-valuemax="100"
                             />
                         </div>
-                        <div className="text-center">
-                            <button
-                                onClick={(e) => handleDeleteCourse(course.course_id, e)}
-                                className="btn btn-danger mt-2 w-100"
-                            >
-                                Delete
-                            </button>
-                        </div>
+                        <small className="text-muted mt-1 d-block">
+                            Progress: {course.progress || 0}%
+                        </small>
+                        <ul className="category__info p-0 mb-8">
+                            <li>
+                                <i className="fal fa-graduation-cap" /> 20 Student Enrolled
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="text-center">
+                        <img
+                            width="60%"
+                            src={`http://localhost:8000/${course.course_icon}`}
+                            alt="Course Icon"
+                            className="image"
+                        />
+                    </div>
+                    <div className="text-center">
+                        <button
+                            onClick={(e) => handleDeleteCourse(course.course_id, e)}
+                            className="btn btn-danger mt-2 w-100"
+                        >
+                            Delete
+                        </button>
                     </div>
                 </div>
-    
+            </div>
+
         </>
     );
 };

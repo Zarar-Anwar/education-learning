@@ -3,7 +3,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from ..core.models import ContactForm
-from ..course.models import Test, Subject, MCQ, EnrollCourse,Material
+from ..course.models import StudentTest,StudentProgress,Test, Subject, MCQ, EnrollCourse,Material
 from .serializers import ContactFormSerializer, TestSerializer, SubjectSerializer,MCQSerializer,EnrollCourseSerializer,MaterialSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import TokenAuthentication
@@ -44,6 +44,68 @@ class MaterialListView(APIView):
         serializer = MaterialSerializer(mcqs, many=True)
         return Response(serializer.data)
     
+class SubmitTestAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
+    def post(self, request, format=None):
+        user = request.user
+        data = request.data.get('answers', {})
+        score = 0
+        total = 0
+        subject_scores = {}
+
+        for qid, user_ans in data.items():
+            try:
+                question = MCQ.objects.get(id=int(qid))
+                total += 1
+
+                if user_ans.lower() == question.correct_option.lower():
+                    score += 1
+                    subject_scores.setdefault(question.subject.id, {'correct': 0, 'total': 0})
+                    subject_scores[question.subject.id]['correct'] += 1
+
+                subject_scores.setdefault(question.subject.id, {'correct': 0, 'total': 0})
+                subject_scores[question.subject.id]['total'] += 1
+
+            except MCQ.DoesNotExist:
+                continue
+
+        # Save StudentProgress per subject
+        for subject_id, result in subject_scores.items():
+            subject = Subject.objects.get(id=subject_id)
+            percentage = (result['correct'] / result['total']) * 100 if result['total'] > 0 else 0
+            StudentProgress.objects.update_or_create(
+                student=user,
+                subject=subject,
+                defaults={'progress': round(percentage, 2)}
+            )
+
+        # Save StudentTest entry
+        if total > 0:
+            test = subject.test  # All MCQs are from same test through subject
+            test_percentage = (score / total) * 100
+            StudentTest.objects.create(
+                student=user,
+                test=test,
+                score=round(test_percentage, 2)
+            )
+
+            # Update EnrollCourse progress
+            enrolled, created = EnrollCourse.objects.get_or_create(user=user, test=test)
+            related_subjects = test.subjects.count()
+            if related_subjects > 0:
+                subject_progresses = StudentProgress.objects.filter(student=user, subject__test=test)
+                total_progress = sum([sp.progress for sp in subject_progresses])
+                course_progress = round(total_progress / related_subjects, 2)
+                enrolled.progress = course_progress
+                enrolled.save()
+
+        return Response({
+            "score": score,
+            "total": total,
+            "percentage": (score / total) * 100 if total > 0 else 0
+        })
     
 
 
@@ -103,3 +165,5 @@ def delete_enrollment(request, courseId):
         return Response({"error": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
     except EnrollCourse.DoesNotExist:
         return Response({"error": "You are not enrolled in this course."}, status=status.HTTP_404_NOT_FOUND)
+
+

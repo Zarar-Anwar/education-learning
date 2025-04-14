@@ -15,40 +15,15 @@ const Header = () => {
                 className="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
                 id="topnav-hamburger-icon"
               >
-                <span className="hamburger-icon">
+                {/* <span className="hamburger-icon">
                   <span />
                   <span />
                   <span />
-                </span>
+                </span> */}
               </button>
               {/* App Search*/}
             </div>
-            <div className="d-flex align-items-center">
-              <div className="dropdown ms-sm-3 header-item topbar-user">
-                <button
-                  type="button"
-                  className="btn"
-                  id="page-header-user-dropdown"
-                >
-                  <span className="d-flex align-items-center">
-                    <img
-                      className="rounded-circle header-profile-user"
-                      src="assets/images/users/user-dummy-img.jpg"
-                      alt="Header Avatar"
-                    />
-                    <span className="text-start ms-xl-2">
-                      <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
-                        USER
-                      </span>
-                      <span className="d-none d-xl-block ms-1 fs-12 user-name-sub-text">
-                        SYSTEM ADMIN
-                      </span>
-                    </span>
-                  </span>
-                </button>
-
-              </div>
-            </div>
+          
           </div>
         </div>
       </header>

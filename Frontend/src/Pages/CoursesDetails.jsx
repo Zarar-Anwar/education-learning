@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../Utils/Axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const Courses = () => {
+const CoursesDetails = () => {
   const [subjects, setSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -122,4 +122,4 @@ const Courses = () => {
   );
 };
 
-export default Courses;
+export default CoursesDetails;

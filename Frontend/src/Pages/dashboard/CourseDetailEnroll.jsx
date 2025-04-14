@@ -1,130 +1,88 @@
-import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { Store } from "../../Utils/Store";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import api from "../../Utils/Axios";
 
-const CourseDetailEnroll = () => {
-    const [courses, setCourses] = useState([]);
+const CoursesDetailEnroll = () => {
+    const [subjects, setSubjects] = useState([]);
+    const [filteredSubjects, setFilteredSubjects] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
-    const { state } = useContext(Store);
-    const { UserInfo } = state;
+
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { courseId } = location.state || {};
 
     useEffect(() => {
-        // Fetch the enrolled courses of the current user
-        api
-            .get("/enrolled-courses/", {
-                headers: {
-                    Authorization: `Token ${UserInfo}`,
-                },
-            })
-            .then((response) => {
-                setCourses(response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching enrolled courses:", error);
-            });
-    }, []);
+        if (!courseId) {
+            navigate("/courses");
+            return;
+        }
 
-    // Handle course deletion
-    const handleDeleteCourse = (courseId, event) => {
-        event.preventDefault();  // Prevent Link navigation
         api
-            .delete(`/enrolled-courses/${courseId}/delete/`, {
-                headers: {
-                    Authorization: `Token ${UserInfo}`,
-                },
-            })
+            .get(`/subjects/`)
             .then((response) => {
-                // Filter out the deleted course from the state
-                setCourses((prevCourses) =>
-                    prevCourses.filter((course) => course.test !== courseId)
+                const matched = response.data.filter(
+                    (subject) => subject.test === courseId
                 );
-                toast.error("Deleted..")
+                setSubjects(matched);
+                setFilteredSubjects(matched);
             })
             .catch((error) => {
-                console.error("Error deleting course:", error);
+                console.error("Error fetching subjects:", error);
             });
-    };
+    }, [courseId, navigate]);
+
+    useEffect(() => {
+        const query = searchQuery.toLowerCase();
+        setFilteredSubjects(
+            subjects.filter((subject) =>
+                subject.name.toLowerCase().includes(query)
+            )
+        );
+    }, [searchQuery, subjects]);
 
     return (
         <>
-        
-            <section className="py-60 mb-5" style={{marginTop:"60px"}}>
+
+            <section className="py-60 mt-5">
                 <div className="container">
-                    <div className="filter_row">
+                    <input
+                        type="search"
+                        className="form-control"
+                        placeholder="Search here"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <div className="filter_row mt-3">
                         <div className="right_block">
                             <h6 className="dark-gray">
-                                Showing {courses.length} of {courses.length} results
+                                Showing {filteredSubjects.length} of {subjects.length} results
                             </h6>
                             <form className="search_bar" onSubmit={(e) => e.preventDefault()}>
                                 <button type="submit">
                                     <i className="fal fa-search" />
                                 </button>
-                                <input
-                                    type="search"
-                                    className="form-control"
-                                    placeholder="Search here"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
+
                             </form>
                         </div>
                     </div>
+
                     <div className="row">
-                        {courses.length > 0 ? (
-                            courses.map((course) => (
-                                <div className="col-lg-4" key={course.id}>
-                                    <Link
-                                        to={{
-                                            pathname: "/course-detail",
-                                        }}
-                                        state={{ courseId: course.test }}
-                                    >
-                                        <div className="course__card mb-20" style={{ width: "300px" }}>
-                                            <div className="course__card__content">
-                                                <button
-                                                    onClick={(e) => handleDeleteCourse(course.test, e)} // Pass the event here
-                                                    className="btn btn-danger mt-2"
-                                                >
-                                                    Delete
-                                                </button>
-                                                <div className="progress mt-3" style={{ height: "8px", borderRadius: "5px", backgroundColor: "#eee" }}>
-                                                    <div
-                                                        className="progress-bar"
-                                                        role="progressbar"
-                                                        style={{
-                                                            width: `${course.progress || 0}%`,
-                                                            backgroundColor: "#007bff",
-                                                            borderRadius: "5px",
-                                                        }}
-                                                        aria-valuenow={course.progress || 0}
-                                                        aria-valuemin="0"
-                                                        aria-valuemax="100"
-                                                    />
-                                                </div>
-                                                <small className="text-muted mt-1 d-block">
-                                                    Progress: {course.progress || 0}%
-                                                </small>
+                        {filteredSubjects.length > 0 ? (
+                            filteredSubjects.map((subject) => (
+                                <div className="col-lg-3" key={subject.id}>
+                                    <Link to="/student-enroll-material" state={{ subjectId: subject.id }}>
+                                        <div className="course__card mb-24" style={{ width: "200px" }}>
+                                            <div className="course__card__icon"></div>
+                                            <div className="course__card__content" style={{ marginBottom: "150px" }}>
                                                 <div className="left__block">
                                                     <img
-                                                        width="100px"
-                                                        style={{ marginTop: "70px" }}
-                                                        src={`http://localhost:8000${course.course_icon}`}
+                                                        style={{ marginTop: "30px" }}
+                                                        width="130px"
+                                                        src={`http://localhost:8000${subject.icon}`}
                                                         alt="Course Tag"
                                                         className="course_tag"
                                                     />
-                                                    <h4 className="mb-4p">
-                                                        <Link
-                                                            to={{
-                                                                pathname: "/course-detail",
-                                                            }}
-                                                            state={{ courseId: course.id }}
-                                                        >
-                                                            {course.course_name}
-                                                        </Link>
-                                                    </h4>
-                                                    <p className="h6 mb-24">{course.course_description}</p>
+                                                    <h4 className="mb-4p">{subject.name}</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -133,7 +91,7 @@ const CourseDetailEnroll = () => {
                             ))
                         ) : (
                             <div className="text-center">
-                                <h6 className="text-danger">No Courses Found</h6>
+                                <h6 className="text-danger">No Subjects Found</h6>
                             </div>
                         )}
                     </div>
@@ -143,4 +101,4 @@ const CourseDetailEnroll = () => {
     );
 };
 
-export default CourseDetailEnroll;
+export default CoursesDetailEnroll;

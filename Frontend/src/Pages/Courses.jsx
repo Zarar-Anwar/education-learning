@@ -106,7 +106,9 @@ const Courses = () => {
           <div className="row">
             {filteredCourses.length > 0 ? (
               filteredCourses.map((course) => (
+
                 <CourseComponent course={course} />
+
               ))
             ) : (
               <div className="text-center">

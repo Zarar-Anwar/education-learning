@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     BarChart,
     Bar,
@@ -10,6 +10,7 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import api from "../../Utils/Axios";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
     const [data, setData] = useState([]);
@@ -40,142 +41,89 @@ function Dashboard() {
                                     <div className="col-12">
                                         <div className="d-flex align-items-lg-center flex-lg-row flex-column">
                                             <div className="flex-grow-1">
-                                                <h4 className="fs-16 mb-1">Good Morning,</h4>
-                                                <p className="text-muted mb-0">
-                                                    Here's what's happening with your store today.
-                                                </p>
+                                                <h1 className="mb-1 text-center">Welcome</h1>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="row">
+
                                     {/* Existing Cards */}
                                     <div className="col-xl-12 col-md-6">
-                                        <div className="card card-animate">
+                                        <div className="card card-animate shadow-sm border-0">
                                             <div className="card-body">
-                                                <div className="d-flex align-items-center">
-                                                    <div className="flex-grow-1 overflow-hidden">
-                                                        <p className="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                                            Total Earnings
-                                                        </p>
-                                                    </div>
+                                                {/* Image and Title in one line */}
+                                                <div className="d-flex align-items-center justify-content-start gap-3 mb-3">
+                                                    <img src="/userdefault.jpg" alt="User" width="40" height="40" className="rounded-circle" />
+                                                    <h5 className="mb-0 text-uppercase fw-medium text-muted">User_name</h5>
                                                 </div>
-                                                <div className="d-flex align-items-end justify-content-between mt-4">
-                                                    <div>
-                                                        <h4 className="fs-22 fw-semibold ff-secondary mb-4">
-                                                            RS {data.total_earnings}
-                                                        </h4>
-                                                    </div>
-                                                    <div className="avatar-sm flex-shrink-0">
-                            <span className="avatar-title bg-success-subtle rounded fs-3">
-                              <i className="bx bxs-coin text-success"/>
-                            </span>
-                                                    </div>
+
+                                                {/* Bootstrap Table */}
+                                                <div className="table-responsive">
+                                                    <table className="table table-striped table-hover table-bordered mb-0">
+                                                        <thead className="table-light">
+                                                            <tr>
+                                                                <th scope="col">Id</th>
+                                                                <th scope="col">Username</th>
+                                                                <th scope="col">Email</th>
+                                                                <th scope="col">Enrolled Courses</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">
+                                                                    <Link to="/student-enrolled" className="text-decoration-none text-dark">
+                                                                        1
+                                                                    </Link>
+                                                                </th>
+                                                                <td>
+                                                                    <Link to="/student-enrolled" className="text-decoration-none text-dark">
+                                                                        abc
+                                                                    </Link>
+                                                                </td>
+                                                                <td>
+                                                                    <Link to="/student-enrolled" className="text-decoration-none text-dark">
+                                                                        abc@gmail.com
+                                                                    </Link>
+                                                                </td>
+                                                                <td>
+                                                                    <Link to="/student-enrolled" className="text-decoration-none text-dark">
+                                                                        20
+                                                                    </Link>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-xl-6 col-md-6">
-                                        <div className="card card-animate">
-                                            <div className="card-body">
-                                                <div className="d-flex align-items-center">
-                                                    <div className="flex-grow-1 overflow-hidden">
-                                                        <p className="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                                            Total Shipping
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div className="mt-4">
-                                                    {/* Yearly Shipping */}
-                                                    <div
-                                                        className="d-flex justify-content-between align-items-center mb-3">
-                                                        <span className="fw-semibold">Yearly:</span>
-                                                        <h4 className="fs-22 fw-semibold ff-secondary mb-0">
-                                                            {data.yearly_shipping}
-                                                        </h4>
-                                                    </div>
-                                                    {/* Monthly Shipping */}
-                                                    <div
-                                                        className="d-flex justify-content-between align-items-center mb-3">
-                                                        <span className="fw-semibold">Monthly:</span>
-                                                        <h4 className="fs-22 fw-semibold ff-secondary mb-0">
-                                                            {data.monthly_shipping}
-                                                        </h4>
-                                                    </div>
-                                                    {/* Weekly Shipping */}
-                                                    <div className="d-flex justify-content-between align-items-center">
-                                                        <span className="fw-semibold">Weekly:</span>
-                                                        <h4 className="fs-22 fw-semibold ff-secondary mb-0">
-                                                            {data.weekly_shipping}
-                                                        </h4>
-                                                    </div>
-                                                </div>
-                                                <div className="d-flex justify-content-center mt-4">
-        <span className="avatar-title bg-success-subtle rounded fs-3">
-          <i className="bx bxs-ship text-success"/>
-        </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-6 col-md-6">
-                                        <div className="card card-animate">
-                                            <div className="card-body">
-                                                <div className="d-flex align-items-center">
-                                                    <div className="flex-grow-1 overflow-hidden">
-                                                        <p className="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                                            Total Transactions
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div className="mt-4">
-                                                    {/* Yearly Transactions */}
-                                                    <div
-                                                        className="d-flex justify-content-between align-items-center mb-3">
-                                                        <span className="fw-semibold">Yearly:</span>
-                                                        <h4 className="fs-22 fw-semibold ff-secondary mb-0">
-                                                            {data.yearly_transactions}
-                                                        </h4>
-                                                    </div>
-                                                    {/* Monthly Transactions */}
-                                                    <div
-                                                        className="d-flex justify-content-between align-items-center mb-3">
-                                                        <span className="fw-semibold">Monthly:</span>
-                                                        <h4 className="fs-22 fw-semibold ff-secondary mb-0">
-                                                            {data.monthly_transactions}
-                                                        </h4>
-                                                    </div>
-                                                    {/* Weekly Transactions */}
-                                                    <div className="d-flex justify-content-between align-items-center">
-                                                        <span className="fw-semibold">Weekly:</span>
-                                                        <h4 className="fs-22 fw-semibold ff-secondary mb-0">
-                                                            {data.weekly_transactions}
-                                                        </h4>
-                                                    </div>
-                                                </div>
-                                                <div className="d-flex justify-content-center mt-4">
-        <span className="avatar-title bg-success-subtle rounded fs-3">
-          <i className="bx bx-money-withdraw text-success"/>
-        </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
+
+
 
 
                                     {/* Other Cards... */}
                                 </div>
 
-                                {/* Row for Bar Chart */}
                                 <div className="row">
                                     <div className="col-12">
                                         <div className="card">
                                             <div className="card-body">
-                                                <h4 className="card-title mb-4">Earnings This Week</h4>
-                                                <ResponsiveContainer width="100%" height={400}>
+                                                <h4 className="card-title mb-4">Dahsboard</h4>
+                                                <ResponsiveContainer width="100%" height={350}>
                                                     <BarChart
-                                                        data={week_data}
+                                                        // data={week_data}
+                                                        data={[
+                                                            { day: "Mon", earnings: 150 },
+                                                            { day: "Tue", earnings: 200 },
+                                                            { day: "Wed", earnings: 100 },
+                                                            { day: "Thu", earnings: 300 },
+                                                            { day: "Fri", earnings: 250 },
+                                                            { day: "Sat", earnings: 180 },
+                                                            { day: "Sun", earnings: 90 },
+                                                        ]}
                                                         margin={{
                                                             top: 20,
                                                             right: 30,
@@ -183,43 +131,22 @@ function Dashboard() {
                                                             bottom: 5,
                                                         }}
                                                     >
-                                                        <CartesianGrid strokeDasharray="3 3"/>
-                                                        <XAxis dataKey="day"/>
-                                                        <YAxis/>
-                                                        <Tooltip/>
-                                                        <Legend/>
-                                                        <Bar dataKey="earnings" fill="rgb(9 206 108)"/>
+                                                        <CartesianGrid strokeDasharray="3 3" />
+                                                        <XAxis dataKey="day" />
+                                                        <YAxis />
+                                                        <Tooltip />
+                                                        <Legend />
+                                                        <Bar dataKey="earnings" fill="rgb(9 206 108)" />
                                                     </BarChart>
                                                 </ResponsiveContainer>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-12">
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <h4 className="card-title mb-4">Earnings in Months</h4>
-                                                <ResponsiveContainer width="100%" height={400}>
-                                                    <BarChart
-                                                        data={month_data}
-                                                        margin={{
-                                                            top: 20,
-                                                            right: 30,
-                                                            left: 20,
-                                                            bottom: 5,
-                                                        }}
-                                                    >
-                                                        <CartesianGrid strokeDasharray="3 3"/>
-                                                        <XAxis dataKey="month"/>
-                                                        <YAxis/>
-                                                        <Tooltip/>
-                                                        <Legend/>
-                                                        <Bar dataKey="earnings" fill="rgb(9 206 108)"/>
-                                                    </BarChart>
-                                                </ResponsiveContainer>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
+
+                                {/* Row for Bar Chart */}
+
                                 {/* End Bar Chart Row */}
                             </div>
                         </div>

@@ -26,6 +26,8 @@ class Material(models.Model):
     subject = models.ForeignKey(Subject, related_name='material', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     pdf = models.FileField(upload_to='materials/pdfs/')
+    image = models.ImageField(upload_to="material_image/", blank=True, null=True)  
+
 
     def __str__(self):
         return self.name

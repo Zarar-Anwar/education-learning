@@ -52,6 +52,12 @@ function Footer() {
                         Courses
                       </Link>
                     </li>
+                    <li>
+                      <Link to="http://localhost:8000/admin">
+                        <i className="fad fa-chevron-right" />
+                        Root Admin
+                      </Link>
+                    </li>
                   </ul>
                 </div>
               </div>

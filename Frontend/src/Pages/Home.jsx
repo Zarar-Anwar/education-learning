@@ -166,7 +166,7 @@ function Home() {
             </div>
           </div>
           <img
-            src="assets/media/banners/hero-banner-1/home-banner.png"
+            src="assets/media/banners/hero-banner-1/main-img.png"
             alt=""
             className="main-img"
           />
