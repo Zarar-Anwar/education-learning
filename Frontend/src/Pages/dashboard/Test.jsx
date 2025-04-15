@@ -41,8 +41,8 @@ function StuTest() {
     );
 
     return (
-        <div className="container mt-5">
-            <div className="card shadow-lg border-0">
+        <div className="container mt-5" >
+            <div className="card shadow-lg border-0" style={{marginTop:"90px"}}>
                 <div className="card-header bg-primary text-white">
                     <h4 className="mb-0">📊 My Test Results</h4>
                 </div>

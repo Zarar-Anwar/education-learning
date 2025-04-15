@@ -10,7 +10,7 @@ import CourseComponent from "./include/CourseComponent";
 function Home() {
   const [courses, setCourses] = useState([]);
   const { state } = useContext(Store);
-  const {UserInfo, ContactInfo } = state;
+  const { UserInfo, ContactInfo } = state;
 
 
   useEffect(() => {
@@ -388,7 +388,9 @@ function Home() {
 
             {courses.length > 0 ? (
               courses.map((course, index) => (
-               <CourseComponent course={course} />
+                <div className="col-xl-4 col-md-6" key={course.id}>
+                  <CourseComponent course={course} />
+                </div>
               ))
             ) : (
               <div className="text-center">

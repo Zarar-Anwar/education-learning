@@ -106,8 +106,9 @@ const Courses = () => {
           <div className="row">
             {filteredCourses.length > 0 ? (
               filteredCourses.map((course) => (
-
+                <div className="col-xl-4 col-md-6" key={course.id}>
                 <CourseComponent course={course} />
+              </div>
 
               ))
             ) : (

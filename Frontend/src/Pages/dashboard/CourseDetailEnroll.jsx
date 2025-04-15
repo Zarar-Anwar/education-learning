@@ -76,7 +76,7 @@ const CoursesDetailEnroll = () => {
                                             <div className="course__card__content" style={{ marginBottom: "150px" }}>
                                                 <div className="left__block">
                                                     <img
-                                                        style={{ marginTop: "30px" }}
+                                                        style={{ marginTop: "30px" ,height:"150px",width:"150px"}}
                                                         width="130px"
                                                         src={`http://localhost:8000${subject.icon}`}
                                                         alt="Course Tag"

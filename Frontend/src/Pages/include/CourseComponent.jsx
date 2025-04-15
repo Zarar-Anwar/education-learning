@@ -35,56 +35,51 @@ const CourseComponent = ({ course }) => {
             });
     };
     return (
-        <>
-            <Link to="/course-detail" state={{ courseId: course.id }}>
-                <div
-                    className="col-xl-4 col-md-6 wow fadeInUp"
-                    data-wow-delay="150ms"
-                    style={{
-                        visibility: "visible",
-                        animationDelay: "150ms",
-                        animationName: "fadeInUp",
-                    }}
-                >
-                    <div className="course__category__card_1 mb-24">
-                        <div className="course__category__card_text ">
-                            <h4 className="course__category__card_title h4 mb-16">
-                                {course.name}
-                            </h4>
-                            <p className="mb-40">
-                                {course.description}                    </p>
-                            <ul className="category__info p-0 mb-8">
-
-                                <li>
-                                    <i className="fal fa-graduation-cap" /> 20 Student Enrolled
-                                </li>
-
-                            </ul>
-                        </div>
-                        <div className="text-center">
-                            <img
-                                width="60%"
-                                src={`http://localhost:8000/${course.icon}`}
-                                alt="MDCAT Preparation"
-                                className="image"
-                            />
-                        </div>
-                        <div className="text-center">
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault(); // prevent navigation since Link is wrapping
-                                    handleEnroll(course.id);
-                                }}
-                                className="btn btn-primary mt-2 w-100"
-                            >
-                                Enroll
-                            </button>
-                        </div>
-                    </div>
+        <Link to="/course-detail" state={{ courseId: course.id }}>
+            <div
+                className="course__category__card_1 mb-24"
+                style={{
+                    visibility: "visible",
+                    animationDelay: "150ms",
+                    animationName: "fadeInUp",
+                }}
+            >
+                <div className="course__category__card_text ">
+                    <h4 className="course__category__card_title h4 mb-16">
+                        {course.name}
+                    </h4>
+                    <p className="mb-40">{course.description}</p>
+                    <ul className="category__info p-0 mb-8">
+                        <li>
+                            <i className="fal fa-graduation-cap" /> 20 Student Enrolled
+                        </li>
+                    </ul>
                 </div>
-            </Link >
-        </>
-    )
+                <div className="text-center">
+                    <img
+                        width="60%"
+                        src={`http://localhost:8000/${course.icon}`}
+                        alt="MDCAT Preparation"
+                        className="image"
+                    />
+                </div>
+                <div className="text-center">
+                    {UserInfo ? <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleEnroll(course.id);
+                        }}
+                        className="btn btn-primary mt-2 w-100"
+                    >
+                        Enroll
+                    </button>
+                        :
+                       null
+                    }
+                </div>
+            </div>
+        </Link>
+    );
 }
 
 export default CourseComponent

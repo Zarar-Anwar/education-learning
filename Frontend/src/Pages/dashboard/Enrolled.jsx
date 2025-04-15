@@ -64,7 +64,9 @@ const Enrolled = () => {
                                     }}
                                     state={{ courseId: course.test }}
                                 >
-                                    <CourseEnrollCompo course={course} />
+                                    <div className="col-xl-4 col-md-6">
+                                        <CourseEnrollCompo course={course} />
+                                    </div>
                                 </Link>
                             ))
                         ) : (

@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import api from "../Utils/Axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Store } from "../Utils/Store";
 
 const CoursesDetails = () => {
   const [subjects, setSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const {state} = useContext(Store)
+  const {UserInfo} = state
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -91,14 +94,14 @@ const CoursesDetails = () => {
             {filteredSubjects.length > 0 ? (
               filteredSubjects.map((subject) => (
                 <div className="col-lg-3" key={subject.id}>
-                  <Link to="/mcqs-list" state={{ subjectId: subject.id }}>
+                  <Link to={UserInfo ?`/student-dashboard`:`/login`} state={{ subjectId: subject.id }}>
                     <div className="course__card mb-24" style={{ width: "200px" }}>
                       <div className="course__card__icon"></div>
                       <div className="course__card__content" style={{ marginBottom: "150px" }}>
                         <div className="left__block">
                           <img
-                            style={{ marginTop: "30px" }}
-                            width="130px"
+                            
+                            style={{ marginTop: "30px", height:"150px",width:"150px" }}
                             src={`http://localhost:8000${subject.icon}`}
                             alt="Course Tag"
                             className="course_tag"

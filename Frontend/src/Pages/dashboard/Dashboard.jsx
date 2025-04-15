@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     BarChart,
     Bar,
@@ -11,11 +11,37 @@ import {
 } from "recharts";
 import api from "../../Utils/Axios";
 import { Link } from "react-router-dom";
+import { Store } from "../../Utils/Store";
 
 function Dashboard() {
+    const {state} = useContext(Store)
+    const {UserInfo} = state
+    const [User, setUser] = useState(null);
+
     const [data, setData] = useState([]);
     const [week_data, setWeekData] = useState([])
     const [month_data, setMonthData] = useState([])
+
+    const [courses, setCourses] = useState([]);
+ 
+
+    useEffect(() => {
+        // Fetch the enrolled courses of the current user
+        api
+            .get("/enrolled-courses/", {
+                headers: {
+                    Authorization: `Token ${UserInfo}`,
+                },
+            })
+            .then((response) => {
+                setCourses(response.data);
+                console.log(courses)
+            })
+            .catch((error) => {
+                console.error("Error fetching enrolled courses:", error);
+            });
+        console.log(courses)
+    }, []);
 
     const data_list = async () => {
         try {
@@ -26,6 +52,21 @@ function Dashboard() {
         } catch (error) {
         }
     };
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
+                const response = await api.get("/user-info/", {
+                    headers: { Authorization: `Token ${UserInfo}` },
+                });
+                setUser(response.data);
+            } catch (error) {
+                console.error("Failed to fetch user info:", error);
+                setUser({ name: "Guest", email: "guest@example.com" });
+            }
+        };
+
+        fetchUserDetails();
+    }, []);
 
     useEffect(() => {
         data_list();
@@ -56,7 +97,7 @@ function Dashboard() {
                                                 {/* Image and Title in one line */}
                                                 <div className="d-flex align-items-center justify-content-start gap-3 mb-3">
                                                     <img src="/userdefault.jpg" alt="User" width="40" height="40" className="rounded-circle" />
-                                                    <h5 className="mb-0 text-uppercase fw-medium text-muted">User_name</h5>
+                                                    <h5 className="mb-0 text-uppercase fw-medium text-muted"><strong>{User?.username}</strong></h5>
                                                 </div>
 
                                                 {/* Bootstrap Table */}
@@ -74,22 +115,22 @@ function Dashboard() {
                                                             <tr>
                                                                 <th scope="row">
                                                                     <Link to="/student-enrolled" className="text-decoration-none text-dark">
-                                                                        1
+                                                                        #
                                                                     </Link>
                                                                 </th>
                                                                 <td>
                                                                     <Link to="/student-enrolled" className="text-decoration-none text-dark">
-                                                                        abc
+                                                                        {User?.username}
                                                                     </Link>
                                                                 </td>
                                                                 <td>
                                                                     <Link to="/student-enrolled" className="text-decoration-none text-dark">
-                                                                        abc@gmail.com
+                                                                        {User?.email}
                                                                     </Link>
                                                                 </td>
                                                                 <td>
                                                                     <Link to="/student-enrolled" className="text-decoration-none text-dark">
-                                                                        20
+                                                                        {courses.length}
                                                                     </Link>
                                                                 </td>
                                                             </tr>
