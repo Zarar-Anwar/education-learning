@@ -12,7 +12,7 @@ urlpatterns = [
     path('user-info/', user_info, name='user-info'),
     path('enroll-course/', enroll_in_course, name='enroll-course'),
     path('enrolled-courses/', enrolled_courses, name='enroll-course'),
-    path('enrolled-courses/<int:course_id>/delete/', delete_enrollment, name='delete_enrollment'),  # New delete endpoint
+    path('enrolled-courses/<int:courseId>/delete/', delete_enrollment, name='delete_enrollment'),  # New delete endpoint
     path('submit-test/', SubmitTestAPIView.as_view(), name='submit-test'),
 
 

@@ -22,7 +22,7 @@ class EnrollCourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EnrollCourse
-        fields = ['id', 'test','user','course_name', 'course_description','course_id', 'course_tag','course_icon', 'progress']
+        fields = ['id', 'test','user','course_name', 'course_description','course_id', 'course_tag','course_icon', 'progress','created_at']
 
 
 class MCQSerializer(serializers.ModelSerializer):

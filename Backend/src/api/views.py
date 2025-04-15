@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth.models import User  # Ensure this is imported
 
 class ContactFormView(generics.CreateAPIView):
     queryset = ContactForm.objects.all()
@@ -51,15 +52,18 @@ class MaterialListView(APIView):
         return Response(serializer.data)
     
 class SubmitTestAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
-
     def post(self, request, format=None):
         email = request.data.get('email')
         data = request.data.get('answers', {})
         score = 0
         total = 0
         subject_scores = {}
+
+        # Get the user instance from the email
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({"error": "User does not exist."}, status=400)
 
         for qid, user_ans in data.items():
             try:
@@ -77,7 +81,6 @@ class SubmitTestAPIView(APIView):
             except MCQ.DoesNotExist:
                 continue
 
-        # Save StudentProgress per subject
         for subject_id, result in subject_scores.items():
             subject = Subject.objects.get(id=subject_id)
             percentage = (result['correct'] / result['total']) * 100 if result['total'] > 0 else 0
@@ -87,21 +90,22 @@ class SubmitTestAPIView(APIView):
                 defaults={'progress': round(percentage, 2)}
             )
 
-        # Save StudentTest entry
         if total > 0:
-            test = subject.test  # All MCQs are from same test through subject
+            # Use the subject from the last question to access the test
+            test = subject.test
             test_percentage = (score / total) * 100
+
             StudentTest.objects.create(
                 email=email,
                 test=test,
                 score=round(test_percentage, 2)
             )
 
-            # Update EnrollCourse progress
-            enrolled, created = EnrollCourse.objects.get_or_create(user=email, test=test)
+            enrolled, created = EnrollCourse.objects.get_or_create(user=user, test=test)
+
             related_subjects = test.subjects.count()
             if related_subjects > 0:
-                subject_progresses = StudentProgress.objects.filter(student=email, subject__test=test)
+                subject_progresses = StudentProgress.objects.filter(email=email, subject__test=test)
                 total_progress = sum([sp.progress for sp in subject_progresses])
                 course_progress = round(total_progress / related_subjects, 2)
                 enrolled.progress = course_progress
@@ -112,8 +116,6 @@ class SubmitTestAPIView(APIView):
             "total": total,
             "percentage": (score / total) * 100 if total > 0 else 0
         })
-    
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

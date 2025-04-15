@@ -48,7 +48,7 @@ class MCQ(models.Model):
 
 # Student Progress model to track progress per student per subject
 class StudentProgress(models.Model):
-    student = models.ForeignKey(User, related_name='progresses', on_delete=models.CASCADE)
+    email = models.CharField(max_length=100)
     subject = models.ForeignKey(Subject, related_name='progresses', on_delete=models.CASCADE)
     progress = models.DecimalField(max_digits=5, decimal_places=2)
 
