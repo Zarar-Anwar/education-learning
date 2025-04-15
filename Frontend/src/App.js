@@ -20,6 +20,7 @@ import CoursesDetailEnroll from "./Pages/dashboard/CourseDetailEnroll";
 import Material from "./Pages/dashboard/Material";
 import MCQTest from "./Pages/dashboard/McqTest";
 import StuTest from "./Pages/dashboard/Test";
+import Chat from "./Pages/dashboard/Chat";
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
                     <Route path='/student-dashboard' element={<Base2><Dashboard /></Base2>} />
                     <Route path='/student-mcqs' element={<Base2><MCQTest /></Base2>} />
                     <Route path='/student-test' element={<Base2><StuTest /></Base2>} />
+                    <Route path='/student-chat' element={<Base2><Chat /></Base2>} />
 
 
                     <Route path='/login' element={<Login />} />

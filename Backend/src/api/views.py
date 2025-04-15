@@ -131,17 +131,27 @@ def user_info(request):
 @api_view(['POST'])
 def enroll_in_course(request):
     test_id = request.data.get("test_id")
+    
     if not test_id:
         return Response({"error": "Test ID is required"}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
         test = Test.objects.get(id=test_id)
+
+        # Check if the user is already enrolled in any course
+        if EnrollCourse.objects.filter(user=request.user).exists():
+            return Response({"message": "You are already enrolled in a course. Cannot enroll in another."}, status=status.HTTP_403_FORBIDDEN)
+
+        # Proceed to enroll in the requested test/course
         enroll, created = EnrollCourse.objects.get_or_create(user=request.user, test=test)
         if not created:
-            return Response({"message": "Already enrolled"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "Already enrolled in this course"}, status=status.HTTP_400_BAD_REQUEST)
+
         return Response({"message": "Successfully enrolled"}, status=status.HTTP_201_CREATED)
+    
     except Test.DoesNotExist:
         return Response({"error": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
+
     
 
 @api_view(['GET'])
