@@ -57,7 +57,7 @@ class StudentProgress(models.Model):
 
 # Student Test model to track student test attempts
 class StudentTest(models.Model):
-    student = models.ForeignKey(User, related_name='tests', on_delete=models.CASCADE)
+    email = models.CharField(max_length=100)
     test = models.ForeignKey(Test, related_name='student_tests', on_delete=models.CASCADE)
     date_taken = models.DateTimeField(auto_now_add=True)
     score = models.DecimalField(max_digits=5, decimal_places=2)

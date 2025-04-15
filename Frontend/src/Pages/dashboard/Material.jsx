@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import api from "../../Utils/Axios";
 import { Helmet } from "react-helmet";
+import { Store } from "../../Utils/Store";
 
 const Material = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
+    const {state} = useContext(Store)
+    const {UserInfo} = state
     const { subjectId } = location.state || {};
     const [material, setMaterial] = useState([]);
     const [subject, setSubjects] = useState([]);
@@ -14,6 +17,8 @@ const Material = () => {
     const [answers, setAnswers] = useState({});
     const [result, setResult] = useState(null);
     const [started, setStarted] = useState(false);
+    const [User, setUser] = useState(null);
+
 
     useEffect(() => {
         if (started) {
@@ -22,6 +27,21 @@ const Material = () => {
             });
         }
     }, [started]);
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
+                const response = await api.get("/user-info/", {
+                    headers: { Authorization: `Token ${UserInfo}` },
+                });
+                setUser(response.data);
+            } catch (error) {
+                console.error("Failed to fetch user info:", error);
+                setUser({ name: "Guest", email: "guest@example.com" });
+            }
+        };
+
+        fetchUserDetails();
+    }, []);
 
     const handleChange = (qid, selected) => {
         setAnswers({ ...answers, [qid]: selected });
@@ -31,6 +51,7 @@ const Material = () => {
         api
             .post("/submit-test/", {
                 answers,
+                email:User.email
             })
             .then((res) => {
                 setResult(res.data);

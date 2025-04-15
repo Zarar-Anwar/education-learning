@@ -32,7 +32,7 @@ class SubjectAdmin(admin.ModelAdmin):
     list_display = ['name', 'test','icon']  
 
 class StudentTestAdmin(admin.ModelAdmin):
-    list_display = ['student', 'test', 'date_taken', 'score']
+    list_display = ['email', 'test', 'date_taken', 'score']
     list_filter = ['test']
     search_fields = ['student__username', 'test__name']
 

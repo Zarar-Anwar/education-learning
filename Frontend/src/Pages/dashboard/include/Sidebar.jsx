@@ -66,7 +66,7 @@ const Sidebar = () => {
                             </li>
 
                             <li className="nav-item">
-                                <Link className="nav-link menu-link" to="/shipping">
+                                <Link className="nav-link menu-link" to="/student-test">
                                     <i className="bx bxs-paper-plane" /> <span>Test</span>
                                 </Link>
                             </li>

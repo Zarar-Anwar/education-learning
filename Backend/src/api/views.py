@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from ..core.models import ContactForm
 from ..course.models import StudentTest,StudentProgress,Test, Subject, MCQ, EnrollCourse,Material
-from .serializers import ContactFormSerializer, TestSerializer, SubjectSerializer,MCQSerializer,EnrollCourseSerializer,MaterialSerializer
+from .serializers import ContactFormSerializer, TestSerializer, SubjectSerializer,MCQSerializer,EnrollCourseSerializer,MaterialSerializer,StudentTestSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -36,7 +36,13 @@ class McqsListView(APIView):
         mcqs = MCQ.objects.all()
         serializer = MCQSerializer(mcqs, many=True)
         return Response(serializer.data)
-    
+
+
+class StuTestListView(APIView):
+    def get(self, request):
+        test = StudentTest.objects.all()
+        serializer = StudentTestSerializer(test, many=True)
+        return Response(serializer.data)
 
 class MaterialListView(APIView):
     def get(self, request):
@@ -49,7 +55,7 @@ class SubmitTestAPIView(APIView):
     authentication_classes = [TokenAuthentication]
 
     def post(self, request, format=None):
-        user = request.user
+        email = request.data.get('email')
         data = request.data.get('answers', {})
         score = 0
         total = 0
@@ -76,7 +82,7 @@ class SubmitTestAPIView(APIView):
             subject = Subject.objects.get(id=subject_id)
             percentage = (result['correct'] / result['total']) * 100 if result['total'] > 0 else 0
             StudentProgress.objects.update_or_create(
-                student=user,
+                email=email,
                 subject=subject,
                 defaults={'progress': round(percentage, 2)}
             )
@@ -86,16 +92,16 @@ class SubmitTestAPIView(APIView):
             test = subject.test  # All MCQs are from same test through subject
             test_percentage = (score / total) * 100
             StudentTest.objects.create(
-                student=user,
+                email=email,
                 test=test,
                 score=round(test_percentage, 2)
             )
 
             # Update EnrollCourse progress
-            enrolled, created = EnrollCourse.objects.get_or_create(user=user, test=test)
+            enrolled, created = EnrollCourse.objects.get_or_create(user=email, test=test)
             related_subjects = test.subjects.count()
             if related_subjects > 0:
-                subject_progresses = StudentProgress.objects.filter(student=user, subject__test=test)
+                subject_progresses = StudentProgress.objects.filter(student=email, subject__test=test)
                 total_progress = sum([sp.progress for sp in subject_progresses])
                 course_progress = round(total_progress / related_subjects, 2)
                 enrolled.progress = course_progress
