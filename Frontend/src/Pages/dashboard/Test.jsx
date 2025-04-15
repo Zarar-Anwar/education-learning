@@ -26,10 +26,11 @@ function StuTest() {
     }, [UserInfo]);
 
     useEffect(() => {
-        axios
+        api
             .get("/student-tests/")
             .then((res) => {
                 setStudentTests(res.data);
+                console.log(res.data)
             })
             .catch((err) => {
                 console.error("Error fetching student tests:", err);
@@ -64,7 +65,7 @@ function StuTest() {
                                         <tr key={index}>
                                             <th scope="row">{index + 1}</th>
                                             <td>{test.email}</td>
-                                            <td>{test.test_name}</td>
+                                            <td>{test.test.name}</td>
                                             <td>
                                                 {new Date(test.date_taken).toLocaleString()}
                                             </td>

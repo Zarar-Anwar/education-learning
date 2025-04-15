@@ -58,6 +58,9 @@ class StudentProgressSerializer(serializers.ModelSerializer):
         fields = ['user', 'test', 'correct_answers', 'total_answers', 'progress_percentage']
 
 class StudentTestSerializer(serializers.ModelSerializer):
+    test = TestSerializer(read_only=True)  # This nests the full test data
+
     class Meta:
         model = StudentTest
-        fields = ['user', 'test', 'score', 'date_attempted']
+        fields = ['email', 'test', 'score', 'date_taken']
+

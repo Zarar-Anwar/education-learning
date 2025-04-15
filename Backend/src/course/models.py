@@ -63,7 +63,7 @@ class StudentTest(models.Model):
     score = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
-        return f'{self.student.username} - {self.test.name} - {self.score}%'
+        return f'{self.email} - {self.test.name} - {self.score}%'
 
 
 class EnrollCourse(models.Model):

@@ -34,7 +34,7 @@ class SubjectAdmin(admin.ModelAdmin):
 class StudentTestAdmin(admin.ModelAdmin):
     list_display = ['email', 'test', 'date_taken', 'score']
     list_filter = ['test']
-    search_fields = ['student__username', 'test__name']
+    search_fields = ['email', 'test__name']
 
 class StudentProgressAdmin(admin.ModelAdmin):
     list_display = ['email', 'subject', 'progress']
