@@ -57,6 +57,7 @@ class SubmitTestAPIView(APIView):
         data = request.data.get('answers', {})
         score = 0
         total = 0
+        incorrect_answers = []  # To track the question numbers that are incorrect
         subject_scores = {}
 
         # Get the user instance from the email
@@ -70,10 +71,13 @@ class SubmitTestAPIView(APIView):
                 question = MCQ.objects.get(id=int(qid))
                 total += 1
 
+                # Check if the answer is correct
                 if user_ans.lower() == question.correct_option.lower():
                     score += 1
                     subject_scores.setdefault(question.subject.id, {'correct': 0, 'total': 0})
                     subject_scores[question.subject.id]['correct'] += 1
+                else:
+                    incorrect_answers.append(qid)  # Add the question ID to incorrect_answers list
 
                 subject_scores.setdefault(question.subject.id, {'correct': 0, 'total': 0})
                 subject_scores[question.subject.id]['total'] += 1
@@ -81,6 +85,7 @@ class SubmitTestAPIView(APIView):
             except MCQ.DoesNotExist:
                 continue
 
+        # Update student progress per subject
         for subject_id, result in subject_scores.items():
             subject = Subject.objects.get(id=subject_id)
             percentage = (result['correct'] / result['total']) * 100 if result['total'] > 0 else 0
@@ -92,7 +97,10 @@ class SubmitTestAPIView(APIView):
 
         if total > 0:
             # Use the subject from the last question to access the test
+            last_subject_id = list(subject_scores.keys())[-1]
+            subject = Subject.objects.get(id=last_subject_id)
             test = subject.test
+
             test_percentage = (score / total) * 100
 
             StudentTest.objects.create(
@@ -101,22 +109,23 @@ class SubmitTestAPIView(APIView):
                 score=round(test_percentage, 2)
             )
 
-            enrolled, created = EnrollCourse.objects.get_or_create(user=user, test=test)
+            # Enroll the student in the course related to the test
+            EnrollCourse.objects.get_or_create(
+                user=user,
+                test=subject.test
+            )
 
-            related_subjects = test.subjects.count()
-            if related_subjects > 0:
-                subject_progresses = StudentProgress.objects.filter(email=email, subject__test=test)
-                total_progress = sum([sp.progress for sp in subject_progresses])
-                course_progress = round(total_progress / related_subjects, 2)
-                enrolled.progress = course_progress
-                enrolled.save()
+            # Return the response with detailed result
+            return Response({
+                "correct": score,
+                "wrong": total - score,
+                "incorrect_questions": incorrect_answers,  # Add incorrect question numbers
+                "score": score,
+                "total": total,
+                "percentage": (score / total) * 100,
+            })
 
-        return Response({
-            "score": score,
-            "total": total,
-            "percentage": (score / total) * 100 if total > 0 else 0
-        })
-
+        return Response({"error": "No questions answered."}, status=400)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_info(request):

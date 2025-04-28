@@ -16,9 +16,9 @@ const Material = () => {
     const [answers, setAnswers] = useState({});
     const [result, setResult] = useState(null);
     const [started, setStarted] = useState(false);
-    const [User, setUser] = useState(null);
+    const [user, setUser] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
-    const [timeLeft, setTimeLeft] = useState(2400); // 40 minutes in seconds
+    const [timeLeft, setTimeLeft] = useState(2400); // 40 minutes
     const [timerStarted, setTimerStarted] = useState(false);
 
     // Fetch user info
@@ -35,47 +35,9 @@ const Material = () => {
             }
         };
         fetchUserDetails();
-    }, []);
+    }, [UserInfo]);
 
-    // Start MCQs
-    useEffect(() => {
-        if (started) {
-            api.get("/mcqs/").then((res) => {
-                setMcqs(res.data.slice(0, 100));
-                setAnswers({});
-                setResult(null);
-                setTimeLeft(2400);
-                setTimerStarted(true);
-            });
-        }
-    }, [started]);
-
-    // Timer logic
-    useEffect(() => {
-        let timer;
-        if (timerStarted && timeLeft > 0) {
-            timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-        } else if (timerStarted && timeLeft === 0) {
-            handleSubmit(); // Auto submit when time ends
-        }
-        return () => clearTimeout(timer);
-    }, [timeLeft, timerStarted]);
-
-    const handleChange = (qid, selected) => {
-        setAnswers((prev) => ({ ...prev, [qid]: selected }));
-    };
-
-    const handleSubmit = () => {
-        api.post("/submit-test/", {
-            answers,
-            email: User.email,
-        }).then((res) => {
-            setResult(res.data);
-            setStarted(false);
-            setTimerStarted(false);
-        });
-    };
-
+    // Fetch material
     useEffect(() => {
         if (!subjectId) {
             navigate("/courses");
@@ -91,6 +53,58 @@ const Material = () => {
                 console.error("Error fetching Material:", error);
             });
     }, [subjectId, navigate]);
+
+    // Start MCQs
+    const startTest = () => {
+        api.get("/mcqs/")
+            .then((res) => {
+                const subjectMcqs = res.data.filter((mcq) => mcq.subject === subjectId);
+                setMcqs(subjectMcqs.slice(0, 20)); // limit to 20
+                setAnswers({});
+                setResult(null);
+                setTimeLeft(2400);
+                setTimerStarted(true);
+                setStarted(true);
+            })
+            .catch((error) => {
+                console.error("Error fetching MCQs:", error);
+            });
+    };
+
+    // Timer logic
+    useEffect(() => {
+        let timer;
+        if (timerStarted && timeLeft > 0) {
+            timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+        } else if (timerStarted && timeLeft === 0) {
+            handleSubmit();
+        }
+        return () => clearTimeout(timer);
+    }, [timeLeft, timerStarted]);
+
+    // Submit test
+    const handleSubmit = () => {
+        if (!user?.email) {
+            alert("User information missing.");
+            return;
+        }
+        api.post("/submit-test/", {
+            answers,
+            email: user.email,
+        })
+        .then((res) => {
+            setResult(res.data);
+            setStarted(false);
+            setTimerStarted(false);
+        })
+        .catch((error) => {
+            console.error("Error submitting test:", error);
+        });
+    };
+
+    const handleChange = (qid, selected) => {
+        setAnswers((prev) => ({ ...prev, [qid]: selected }));
+    };
 
     const filteredMaterial = material.filter((item) =>
         item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -118,17 +132,15 @@ const Material = () => {
                         justify-content: center;
                         align-items: center;
                     }
-
                     .modal-content-custom {
                         background: white;
                         padding: 30px;
                         border-radius: 10px;
-                        max-height: 80vh;
+                        max-height: 90vh;
                         overflow-y: auto;
-                        width: 90%;
+                        width: 95%;
                         position: relative;
                     }
-
                     .btn-close {
                         position: absolute;
                         top: 10px;
@@ -158,7 +170,7 @@ const Material = () => {
 
                     <div className="text-center mt-4">
                         {!started && !result && (
-                            <button className="btn btn-primary w-100" onClick={() => setStarted(true)}>
+                            <button className="btn btn-primary w-100" onClick={startTest}>
                                 Take a Test
                             </button>
                         )}
@@ -171,7 +183,7 @@ const Material = () => {
                                 <h3 className="text-center mb-4">MCQ Test</h3>
                                 <div className="d-flex justify-content-between mb-3">
                                     <span><strong>Time Left:</strong> {formatTime(timeLeft)}</span>
-                                    <span><strong>Left MCQs:</strong> {100 - Object.keys(answers).length}</span>
+                                    <span><strong>Remaining MCQs:</strong> {20 - Object.keys(answers).length}</span>
                                 </div>
                                 <form>
                                     {mcqs.map((q, index) => (
@@ -207,23 +219,36 @@ const Material = () => {
                         </div>
                     )}
 
-                    {result && (
-                        <div className="alert alert-info mt-4 text-center">
-                            <h4>Test Completed!</h4>
-                            <p>Correct: {result.correct}</p>
-                            <p>Wrong: {result.wrong}</p>
-                            <p>Total Score: {result.score} / {result.total}</p>
-                            <p>Percentage: {result.percentage.toFixed(2)}%</p>
-                            <button className="btn btn-outline-primary mt-2" onClick={() => {
-                                setResult(null);
-                                setAnswers({});
-                                setMcqs([]);
-                                setTimeLeft(2400);
-                            }}>
-                                Retake Test
-                            </button>
-                        </div>
-                    )}
+{result && (
+    <div className="alert alert-info mt-4 text-center">
+        <h4>Test Completed!</h4>
+        <p>Correct: {result.correct}</p>
+        <p>Wrong: {result.wrong}</p>
+        <p>Total Score: {result.score} / {result.total}</p>
+        <p>Percentage: {result.percentage.toFixed(2)}%</p>
+
+        {/* Show the wrong questions */}
+        <p><strong>Wrong Questions:</strong></p>
+        <ul>
+            {result?.wrong_questions?.map((qid, index) => (
+                <li key={index}>Question {qid}</li>
+            ))}
+        </ul>
+
+        <button
+            className="btn btn-outline-primary mt-2"
+            onClick={() => {
+                setResult(null);
+                setAnswers({});
+                setMcqs([]);
+                setTimeLeft(2400);
+            }}
+        >
+            Retake Test
+        </button>
+    </div>
+)}
+
 
                     <div className="row mt-5">
                         {filteredMaterial.length > 0 ? (
@@ -234,7 +259,7 @@ const Material = () => {
                                             <div className="position-absolute top-0 start-0 m-2">
                                                 <img
                                                     src={`http://localhost:8000${item.image}`}
-                                                    alt="Course Tag"
+                                                    alt="Course"
                                                     className="img-thumbnail border-0"
                                                     style={{ width: "80px", height: "70px", objectFit: "cover" }}
                                                 />
